@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompreController;
-use App\Http\Controllers\ModulController;
+use App\Http\Controllers\KKNController;
+use App\Http\Controllers\PTAController;
+use App\Http\Controllers\DTAController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,7 +24,11 @@ Route::get('/dashboard', function () {
 
 Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'verified'])->name('compre');
 
-Route::get('/moduls',[ ModulController::class,"indexx"])->middleware(['auth', 'verified'])->name('moduls');
+Route::get('/kkn',[ KKNController::class,"indexx"])->middleware(['auth', 'verified'])->name('kkn');
+
+Route::get('/pengaturan-ta',[ PTAController::class,"indexxx"])->middleware(['auth', 'verified'])->name('pengaturan-ta');
+
+Route::get('/daftar-ta',[ DTAController::class,"indexxxx"])->middleware(['auth', 'verified'])->name('daftar-ta');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

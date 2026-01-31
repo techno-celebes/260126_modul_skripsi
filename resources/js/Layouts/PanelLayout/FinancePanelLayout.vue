@@ -21,61 +21,37 @@
                 <div class="offcanvas-body">
                     <!-- Beranda -->
                     <div class="dropdown-s">
-                        <Link :href="'#'" class="dropdown-toggle-s">
+                        <Link :href="route('dashboard')" class="dropdown-toggle-s">
                             <i class="fa fa-home"></i> Beranda
-                        </Link>
-                    </div>
-                    <div class="dropdown-s">
-                        <Link :href="'#'" class="dropdown-toggle-s">
-                            <i class="fa fa-dollar"></i> Tagihan
                         </Link>
                     </div>
 
                     <!-- Catatan -->
+                    <div class="dropdown-s submenu-magang">
+                        <a class="dropdown-toggle-s" @click.stop="toggleDropdown('magang')">
+                            <i class="fa fa-file-text-o"></i> Magang
+                            <i class="ml-2 bi" :class="activeDropdown === 'magang' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                        </a>
+                        <div class="dropdown-menu-s" :class="{ 'show': activeDropdown === 'magang' }">
+                            <Link :href="route('kkn')" class="dropdown-toggle-s">KKN</Link>
+                            <hr />
+                        </div>
+                    </div>
+                    
                     <div class="dropdown-s submenu-laporan">
                         <a class="dropdown-toggle-s" @click.stop="toggleDropdown('laporan')">
-                            <i class="fa fa-file-text-o"></i> Laporan
+                            <i class="fa fa-file-text-o"></i> Tugas Akhir
                             <i class="ml-2 bi" :class="activeDropdown === 'laporan' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                         </a>
                         <div class="dropdown-menu-s" :class="{ 'show': activeDropdown === 'laporan' }">
-                            <span class="span-title-menu not-default-size">Laporan</span>
+                            <Link :href="route('pengaturan-ta')"
+                            class="span-title-menu not-default-size">Pengaturan Tugas Akhir</Link>
                             <hr />
-                            
-                            <!-- Arsip Dosen -->
-                            <div class="dropdown-submenu">
-                                <a class="a-menu" @click.stop="toggleSubDropdown('arsip-dosen')">
-                                    Laporan Keuangan
-                                    <i class="ml-2 bi" :class="activeSubDropdown === 'arsip-dosen' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-                                </a>
-                                <div class="dropdown-menu-sub" :class="{ 'show': activeSubDropdown === 'arsip-dosen' }">
-                                    <span class="span-title-menu not-default-size">Laporan Keuangan</span>
-                                    <hr />
-                                    <Link :href="'#'" class="a-menu">
-                                        Laporan Keuangan UKT
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <!-- Arsip Mahasiswa -->
-                            <div class="dropdown-submenu">
-                                <a class="a-menu" @click.stop="toggleSubDropdown('arsip-mahasiswa')">
-                                    Statistika Keuangan
-                                    <i class="ml-2 bi" :class="activeSubDropdown === 'arsip-mahasiswa' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-                                </a>
-                                <div class="dropdown-menu-sub" :class="{ 'show': activeSubDropdown === 'arsip-mahasiswa' }">
-                                    <span class="span-title-menu not-default-size">Arsip Mahasiswa</span>
-                                    <hr />
-                                    <Link :href="'#'" class="a-menu">
-                                        Laporan Uang Masuk
-                                    </Link>
-                                    <Link :href="'#'" class="a-menu">
-                                        Perbandingan UKT
-                                    </Link>
-                                </div>
-                            </div>
+                            <Link :href="route('daftar-ta')"
+                            class="span-title-menu not-default-size">Daftar Tugas Akhir</Link>
+                            <hr />
                         </div>
                     </div>
-
                 </div>
             </div>
         </template>
