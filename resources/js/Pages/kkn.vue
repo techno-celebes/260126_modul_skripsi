@@ -15,19 +15,19 @@
             <br>
             <label>
                 NIM: <br>
-                <input type="text" placeholder="Masukkan Nama">
+                <input type="text" placeholder="Masukkan Nim">
             </label>
             <br>
             <br>
             <label>
                 Fakultas: <br>
-                <input type="text" placeholder="Masukkan Nama">
+                <input type="text" placeholder="Masukkan Nama Fakultas">
             </label>
             <br>
             <br>
             <label>
                 Prodi: <br>
-                <input type="text" placeholder="Masukkan Nama">
+                <input type="text" placeholder="Masukkan Nama Prodi">
             </label>
             <br>
             <br>

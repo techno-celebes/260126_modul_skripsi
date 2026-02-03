@@ -18,7 +18,7 @@
             <br>
             <label>
                 NIM: <br>
-                <input type="text" placeholder="Masukkan Nama">
+                <input type="text" placeholder="Masukkan Nim">
             </label>
             <br>
             <br>
