@@ -39,18 +39,9 @@
                     </div>
                     
                     <div class="dropdown-s submenu-laporan">
-                        <a class="dropdown-toggle-s" @click.stop="toggleDropdown('laporan')">
+                        <Link href= "/tugasakhir" class="dropdown-toggle-s">
                             <i class="fa fa-file-text-o"></i> Tugas Akhir
-                            <i class="ml-2 bi" :class="activeDropdown === 'laporan' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-                        </a>
-                        <div class="dropdown-menu-s" :class="{ 'show': activeDropdown === 'laporan' }">
-                            <Link :href="route('pengaturan-ta')"
-                            class="span-title-menu not-default-size">Pengaturan Tugas Akhir</Link>
-                            <hr />
-                            <Link :href="route('daftar-ta')"
-                            class="span-title-menu not-default-size">Daftar Tugas Akhir</Link>
-                            <hr />
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>

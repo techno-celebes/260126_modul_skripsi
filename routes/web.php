@@ -3,8 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompreController;
 use App\Http\Controllers\KKNController;
-use App\Http\Controllers\PTAController;
-use App\Http\Controllers\DTAController;
+use App\Http\Controllers\TugasAkhirController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,9 +25,14 @@ Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'v
 
 Route::get('/kkn',[ KKNController::class,"indexx"])->middleware(['auth', 'verified'])->name('kkn');
 
-Route::get('/pengaturan-ta',[ PTAController::class,"indexxx"])->middleware(['auth', 'verified'])->name('pengaturan-ta');
 
-Route::get('/daftar-ta',[ DTAController::class,"indexxxx"])->middleware(['auth', 'verified'])->name('daftar-ta');
+Route::post('/tugasakhir', [TugasAkhirController::class, 'store']);
+
+
+Route::get('/tugasakhir', function () {
+    return Inertia::render('tugasakhir');
+})->middleware(['auth', 'verified']);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
