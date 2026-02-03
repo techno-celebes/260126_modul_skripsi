@@ -33,7 +33,7 @@
                             <i class="ml-2 bi" :class="activeDropdown === 'magang' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                         </a>
                         <div class="dropdown-menu-s" :class="{ 'show': activeDropdown === 'magang' }">
-                            <Link :href="route('kkn')" class="dropdown-toggle-s">KKN</Link>
+                            <Link :href="route('kkn')" class="span-title-menu not-default-size">KKN</Link>
                             <hr />
                         </div>
                     </div>
