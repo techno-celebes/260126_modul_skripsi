@@ -1,6 +1,6 @@
 <template>
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-fluid py-4" style="padding-left: 0 !important; padding-right: 0 !important;">
+    <div class="d-flex justify-content-between align-items-center mb-4" style="padding-left: 15px; padding-right: 15px;">
         <div>
             <h1 class="h3 fw-bold text-dark mb-1">Detail KKN</h1>
             <p class="text-muted mb-0">{{ kknData.nama }}</p>
@@ -10,25 +10,28 @@
         </button>
     </div>
 
-    <div class="row g-3">
+    <div class="row g-3" style="margin-left: 0; margin-right: 0; padding-left: 15px; padding-right: 15px;">
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body p-2">
                     <button
-                        class="btn w-100 mb-2"
-                        :class="activeTab === 'detail' ? 'btn-warning text-white' : 'btn-outline-warning'"
+                        class="btn w-100 mb-2 text-dark"
+                        style="text-align: left; padding-left: 8px;"
+                        :class="activeTab === 'detail' ? 'btn-warning' : 'btn-outline-warning'"
                         @click="activeTab = 'detail'">
                         Detail KKN
                     </button>
                     <button
-                        class="btn w-100 mb-2"
-                        :class="activeTab === 'aktivitas' ? 'btn-warning text-white' : 'btn-outline-warning'"
+                        class="btn w-100 mb-2 text-dark"
+                        style="text-align: left; padding-left: 8px;"
+                        :class="activeTab === 'aktivitas' ? 'btn-warning' : 'btn-outline-warning'"
                         @click="activeTab = 'aktivitas'">
                         Upload Aktivitas
                     </button>
                     <button
-                        class="btn w-100"
-                        :class="activeTab === 'penilaian' ? 'btn-warning text-white' : 'btn-outline-warning'"
+                        class="btn w-100 text-dark"
+                        style="text-align: left; padding-left: 8px;"
+                        :class="activeTab === 'penilaian' ? 'btn-warning' : 'btn-outline-warning'"
                         @click="activeTab = 'penilaian'">
                         Penilaian
                     </button>
@@ -85,7 +88,7 @@
                             <label>Dokumentasi (Maks 2MB dengan format JPG/PNG)</label>
                             <input type="file" class="form-control" @change="e=>aktivitasForm.file=e.target.files[0]" accept="image/*">
                         </div>
-                        <button class="btn btn-warning text-white" :disabled="!isAktivitasValid" @click="uploadAktivitas">Upload Aktivitas</button>
+                        <button class="btn btn-warning text-dark" :disabled="!isAktivitasValid" @click="uploadAktivitas">Upload Aktivitas</button>
                     </div>
 
                     <div v-if="activeTab === 'penilaian'">

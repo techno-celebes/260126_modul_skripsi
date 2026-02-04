@@ -6,7 +6,7 @@
             <h1 class="h3 fw-bold text-dark mb-1">Kuliah Kerja Nyata (KKN)</h1>
             <p class="text-muted mb-0">Daftar Pengajuan KKN</p>
         </div>
-        <button class="btn btn-warning text-white" @click="showModal = true">
+        <button class="btn btn-warning text-dark" @click="showModal = true">
             Tambah Pengajuan
         </button>
     </div>
@@ -37,7 +37,7 @@
                             <td>{{ item.durasi }}</td>
                             <td><span class="badge bg-warning">{{ item.status }}</span></td>
                             <td>
-                                <button class="btn btn-sm btn-warning text-white" @click="$inertia.visit(`/kkn/${item.id}`)">
+                                <button class="btn btn-sm btn-warning text-dark" @click="$inertia.visit(`/kkn/${item.id}`)">
                                     <i class="fa fa-pencil"></i>
                                 </button>
                             </td>
@@ -82,8 +82,8 @@
             </div>
 
             <div class="modal-footer-custom">
-                <button class="btn btn-danger" @click="closeModal">Close</button>
-                <button class="btn btn-warning text-white" :disabled="!isFormValid" @click="submitForm">Submit</button>
+                <button class="btn btn-danger text-white" @click="closeModal">Close</button>
+                <button class="btn btn-warning text-dark" :disabled="!isFormValid" @click="submitForm">Submit</button>
             </div>
         </div>
     </div>
