@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
 Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'verified'])->name('compre');
 
 Route::get('/kkn',[ KKNController::class,"indexx"])->middleware(['auth', 'verified'])->name('kkn');
+Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verified']);
 
 
 Route::post('/tugasakhir', [TugasAkhirController::class, 'store']);
