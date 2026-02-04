@@ -30,6 +30,11 @@ Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verif
 Route::post('/tugasakhir', [TugasAkhirController::class, 'store']);
 
 
+Route::get('/tugasakhir/detail', function () {
+    return Inertia::render('dta');
+});
+
+
 Route::get('/tugasakhir', function () {
     return Inertia::render('tugasakhir');
 })->middleware(['auth', 'verified']);
