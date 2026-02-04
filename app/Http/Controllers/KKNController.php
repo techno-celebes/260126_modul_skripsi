@@ -38,4 +38,12 @@ class KKNController extends Controller
 
         return redirect()->route('kkn');
     }
+
+    public function show($id)
+    {
+        $kkn = KKN::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        return Inertia::render('kkn-detail', [
+            'kknData' => $kkn
+        ]);
+    }
 }

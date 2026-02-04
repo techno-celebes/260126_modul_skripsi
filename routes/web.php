@@ -25,6 +25,7 @@ Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'v
 
 Route::get('/kkn',[ KKNController::class,"indexx"])->middleware(['auth', 'verified'])->name('kkn');
 Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verified']);
+Route::get('/kkn/{id}', [KKNController::class, 'show'])->middleware(['auth', 'verified'])->name('kkn.show');
 
 
 Route::post('/tugasakhir', [TugasAkhirController::class, 'store']);
