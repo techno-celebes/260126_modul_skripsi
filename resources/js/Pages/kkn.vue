@@ -37,7 +37,7 @@
                             <td>{{ item.durasi }}</td>
                             <td><span class="badge bg-warning">{{ item.status }}</span></td>
                             <td>
-                                <button class="btn btn-sm btn-warning text-dark" @click="$inertia.visit(`/kkn/${item.id}`)">
+                                <button class="btn btn-sm btn-warning" @click="$inertia.visit(`/kkn/${item.id}`)">
                                     <i class="fa fa-pencil"></i>
                                 </button>
                             </td>

@@ -15,25 +15,22 @@
             <div class="card">
                 <div class="card-body p-2">
                     <button
-                        class="btn w-100 mb-2 text-dark"
-                        style="text-align: left; padding-left: 8px;"
-                        :class="activeTab === 'detail' ? 'btn-warning' : 'btn-outline-warning'"
+                        class="btn w-100 mb-2 tab-button"
+                        :class="activeTab === 'detail' ? 'btn-primary' : 'btn-light'"
                         @click="activeTab = 'detail'">
-                        Detail KKN
+                        <i class="fa fa-info-circle me-2"></i>Detail KKN
                     </button>
                     <button
-                        class="btn w-100 mb-2 text-dark"
-                        style="text-align: left; padding-left: 8px;"
-                        :class="activeTab === 'aktivitas' ? 'btn-warning' : 'btn-outline-warning'"
+                        class="btn w-100 mb-2 tab-button"
+                        :class="activeTab === 'aktivitas' ? 'btn-primary' : 'btn-light'"
                         @click="activeTab = 'aktivitas'">
-                        Upload Aktivitas
+                        <i class="fa fa-upload me-2"></i>Upload Aktivitas
                     </button>
                     <button
-                        class="btn w-100 text-dark"
-                        style="text-align: left; padding-left: 8px;"
-                        :class="activeTab === 'penilaian' ? 'btn-warning' : 'btn-outline-warning'"
+                        class="btn w-100 tab-button"
+                        :class="activeTab === 'penilaian' ? 'btn-primary' : 'btn-light'"
                         @click="activeTab = 'penilaian'">
-                        Penilaian
+                        <i class="fa fa-star me-2"></i>Penilaian
                     </button>
                 </div>
             </div>
@@ -66,7 +63,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="fw-bold text-dark">Status</label>
-                            <p><span class="badge bg-warning">{{ kknData.status }}</span></p>
+                            <p><span class="badge bg-secondary">{{ kknData.status }}</span></p>
                         </div>
                     </div>
 
@@ -88,7 +85,7 @@
                             <label>Dokumentasi (Maks 2MB dengan format JPG/PNG)</label>
                             <input type="file" class="form-control" @change="e=>aktivitasForm.file=e.target.files[0]" accept="image/*">
                         </div>
-                        <button class="btn btn-warning text-dark" :disabled="!isAktivitasValid" @click="uploadAktivitas">Upload Aktivitas</button>
+                        <button class="btn btn-success" :disabled="!isAktivitasValid" @click="uploadAktivitas">Upload Aktivitas</button>
                     </div>
 
                     <div v-if="activeTab === 'penilaian'">
@@ -152,6 +149,16 @@ function uploadAktivitas(){
 <style scoped>
 .card{
     border-radius:12px;
+}
+
+.tab-button{
+    text-align:left;
+    font-weight:600;
+    transition:all 0.3s ease;
+}
+
+.tab-button:hover{
+    transform:translateX(5px);
 }
 
 input, select, textarea{

@@ -188,6 +188,14 @@
     transition: all 0.2s ease;
 }
 
+.submenu-magang .dropdown-toggle-s {
+    color: white;
+}
+
+.submenu-magang .span-title-menu {
+    color: white;
+}
+
 .dropdown-toggle-s:hover {
     background-color: #f8f9fa;
 }
@@ -241,5 +249,6 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: white !important;
 }
 </style>
