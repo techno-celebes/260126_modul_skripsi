@@ -26,6 +26,13 @@
                         </Link>
                     </div>
 
+                    <!-- Aktivitas -->
+                    <div class="dropdown-s">
+                        <Link :href="route('aktivitas')" class="dropdown-toggle-s">
+                            <i class="fa fa-calendar"></i> Aktivitas
+                        </Link>
+                    </div>
+
                     <!-- Catatan -->
                     <div class="dropdown-s submenu-magang">
                         <a class="dropdown-toggle-s" @click.stop="toggleDropdown('magang')">
@@ -188,6 +195,14 @@
     transition: all 0.2s ease;
 }
 
+.submenu-magang .dropdown-toggle-s {
+    color: white;
+}
+
+.submenu-magang .span-title-menu {
+    color: white;
+}
+
 .dropdown-toggle-s:hover {
     background-color: #f8f9fa;
 }
@@ -241,5 +256,6 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: white !important;
 }
 </style>

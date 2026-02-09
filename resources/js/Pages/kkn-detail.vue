@@ -1,0 +1,317 @@
+<template>
+<div class="container-fluid py-4" style="padding-left: 0 !important; padding-right: 0 !important;">
+    <div class="d-flex justify-content-between align-items-center mb-4" style="padding-left: 15px; padding-right: 15px;">
+        <div>
+            <h1 class="h3 fw-bold text-dark mb-1">Detail KKN</h1>
+            <p class="text-muted mb-0">{{ kknData.nama }}</p>
+        </div>
+        <button class="btn btn-secondary" @click="$inertia.visit('/kkn')">
+            Kembali
+        </button>
+    </div>
+
+    <div class="row g-3" style="margin-left: 0; margin-right: 0; padding-left: 15px; padding-right: 15px;">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body p-2">
+                    <button
+                        class="btn w-100 mb-2 tab-button"
+                        :class="activeTab === 'detail' ? 'btn-success' : 'btn-light'"
+                        @click="activeTab = 'detail'">
+                        <i class="fa fa-info-circle me-2"></i>Detail KKN
+                    </button>
+                    <button
+                        class="btn w-100 mb-2 tab-button"
+                        :class="activeTab === 'aktivitas' ? 'btn-success' : 'btn-light'"
+                        @click="activeTab = 'aktivitas'">
+                        <i class="fa fa-upload me-2"></i>Upload Aktivitas
+                    </button>
+                    <button
+                        class="btn w-100 tab-button"
+                        :class="activeTab === 'penilaian' ? 'btn-success' : 'btn-light'"
+                        @click="activeTab = 'penilaian'">
+                        <i class="fa fa-star me-2"></i>Penilaian
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <div v-if="activeTab === 'detail'">
+                        <h5 class="fw-bold mb-3">Detail KKN</h5>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Nama</label>
+                            <p class="text-dark">{{ kknData.nama }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">NIM</label>
+                            <p class="text-dark">{{ kknData.nim }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Alamat KKN</label>
+                            <p class="text-dark">{{ kknData.alamat }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Penanggung Jawab</label>
+                            <p class="text-dark">{{ kknData.penanggung_jawab }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Durasi</label>
+                            <p class="text-dark">{{ kknData.durasi }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Status</label>
+                            <p><span class="badge bg-secondary">{{ kknData.status }}</span></p>
+                        </div>
+                    </div>
+
+                    <div v-if="activeTab === 'aktivitas'">
+                        <h5 class="fw-bold mb-3">Upload Aktivitas</h5>
+
+                        <!-- Sub Tabs -->
+                        <ul class="nav nav-tabs mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link" :class="{ active: subTab === 'harian' }" @click="subTab = 'harian'" style="cursor: pointer;">
+                                    Upload Harian
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" :class="{ active: subTab === 'dokumen' }" @click="subTab = 'dokumen'" style="cursor: pointer;">
+                                    Dokumen KKN
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Form Upload -->
+                        <div class="mb-4 p-3 border rounded">
+                            <div class="mb-3">
+                                <label>Judul {{ subTab === 'harian' ? 'Aktivitas' : 'Dokumen' }}</label>
+                                <input class="form-control" placeholder="Masukkan Judul" v-model="aktivitasForm.judul">
+                            </div>
+                            <div class="mb-3">
+                                <label>Deskripsi</label>
+                                <textarea class="form-control" rows="3" placeholder="Masukkan Deskripsi" v-model="aktivitasForm.deskripsi"></textarea>
+                            </div>
+                            <div class="mb-3" v-if="subTab === 'harian'">
+                                <label>Tanggal</label>
+                                <input type="date" class="form-control" v-model="aktivitasForm.tanggal">
+                            </div>
+                            <div class="mb-3">
+                                <label>File (Maks 2MB - JPG/PNG/PDF)</label>
+                                <input type="file" class="form-control" @change="e=>aktivitasForm.file=e.target.files[0]" accept="image/*,application/pdf">
+                            </div>
+                            <button class="btn btn-success" :disabled="!isAktivitasValid" @click="uploadAktivitas">
+                                Upload {{ subTab === 'harian' ? 'Aktivitas' : 'Dokumen' }}
+                            </button>
+                        </div>
+
+                        <!-- Tabel Data -->
+                        <h6 class="fw-bold mb-2">Data {{ subTab === 'harian' ? 'Aktivitas Harian' : 'Dokumen KKN' }}</h6>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Judul</th>
+                                        <th>Deskripsi</th>
+                                        <th v-if="subTab === 'harian'">Tanggal</th>
+                                        <th>File</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in filteredAktivitas" :key="item.id">
+                                        <td>{{ index + 1 }}</td>
+                                        <td>{{ item.judul }}</td>
+                                        <td>{{ item.deskripsi || '-' }}</td>
+                                        <td v-if="subTab === 'harian'">{{ item.tanggal || '-' }}</td>
+                                        <td>
+                                            <a v-if="item.file_path" :href="`/storage/${item.file_path}`" target="_blank" class="btn btn-sm btn-info text-white">
+                                                Lihat
+                                            </a>
+                                            <span v-else>-</span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-warning text-white" @click="openDetail(item)">
+                                                Detail
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="filteredAktivitas.length === 0">
+                                        <td :colspan="subTab === 'harian' ? 6 : 5" class="text-center text-muted">
+                                            Belum ada data
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div v-if="activeTab === 'penilaian'">
+                        <h5 class="fw-bold mb-3">Penilaian</h5>
+                        <div class="alert alert-info">
+                            Penilaian akan ditampilkan setelah dosen pembimbing memberikan nilai.
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold">Nilai Akhir</label>
+                            <p class="fs-4">-</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold">Catatan Pembimbing</label>
+                            <p>Belum ada catatan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail -->
+    <div v-if="showDetail" class="modal-backdrop-custom">
+        <div class="modal-card">
+            <div class="modal-header-custom">
+                <h5 class="fw-bold mb-0">Detail {{ detailData.tipe === 'harian' ? 'Aktivitas' : 'Dokumen' }}</h5>
+                <button class="btn-close" @click="showDetail=false"></button>
+            </div>
+            <div class="modal-body-custom">
+                <p><b>Judul:</b> {{ detailData.judul }}</p>
+                <p><b>Deskripsi:</b> {{ detailData.deskripsi || '-' }}</p>
+                <p v-if="detailData.tipe === 'harian'"><b>Tanggal:</b> {{ detailData.tanggal || '-' }}</p>
+                <p><b>File:</b>
+                    <a v-if="detailData.file_path" :href="`/storage/${detailData.file_path}`" target="_blank">Lihat File</a>
+                    <span v-else>-</span>
+                </p>
+            </div>
+            <div class="modal-footer-custom">
+                <button class="btn btn-danger" @click="showDetail=false">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { useForm } from '@inertiajs/vue3'
+import PanelLayout from '@/Layouts/PanelLayout/FinancePanelLayout.vue'
+
+defineOptions({ layout: PanelLayout })
+
+const props = defineProps({
+    kknData: Object,
+    aktivitasList: Array
+})
+
+const activeTab = ref('detail')
+const subTab = ref('harian')
+const showDetail = ref(false)
+const detailData = ref({})
+
+const aktivitasForm = ref({
+    judul: '',
+    deskripsi: '',
+    tanggal: '',
+    file: null
+})
+
+const isAktivitasValid = computed(() => {
+    if (subTab.value === 'harian') {
+        return aktivitasForm.value.judul && aktivitasForm.value.tanggal
+    }
+    return aktivitasForm.value.judul
+})
+
+const filteredAktivitas = computed(() => {
+    return props.aktivitasList.filter(item => item.tipe === subTab.value)
+})
+
+function uploadAktivitas() {
+    const form = useForm({
+        tipe: subTab.value,
+        judul: aktivitasForm.value.judul,
+        deskripsi: aktivitasForm.value.deskripsi,
+        tanggal: aktivitasForm.value.tanggal,
+        file: aktivitasForm.value.file
+    })
+
+    form.post(`/kkn/${props.kknData.id}/aktivitas`, {
+        onSuccess: () => {
+            aktivitasForm.value = {
+                judul: '',
+                deskripsi: '',
+                tanggal: '',
+                file: null
+            }
+        }
+    })
+}
+
+function openDetail(item) {
+    detailData.value = item
+    showDetail.value = true
+}
+</script>
+
+<style scoped>
+.card{
+    border-radius:12px;
+}
+
+.tab-button{
+    text-align:left;
+    font-weight:600;
+    transition:all 0.3s ease;
+}
+
+.tab-button:hover{
+    transform:translateX(5px);
+}
+
+input, select, textarea{
+    border-radius:6px;
+    font-size:14px;
+}
+
+.modal-backdrop-custom{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-card{
+    width:600px;
+    max-height:90vh;
+    background:white;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+}
+
+.modal-header-custom{
+    padding:16px 20px;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-body-custom{
+    flex:1;
+    padding:18px 20px;
+    overflow-y:auto;
+}
+
+.modal-footer-custom{
+    padding:16px 20px;
+    border-top:1px solid #e5e7eb;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+</style>

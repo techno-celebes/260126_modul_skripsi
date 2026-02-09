@@ -7,7 +7,9 @@
                 <h1 class="h3 fw-bold text-dark mb-1">Tugas Akhir</h1>
                 <p class="text-muted mb-0">Tambahkan Permintaan Anda</p>
             </div>
-            <button class="btn btn-warning text-white" @click="showModal = true">
+
+            <!-- TOMBOL HIJAU -->
+            <button class="btn btn-success text-white" @click="showModal = true">
                 Tambah Permintaan
             </button>
         </div>
@@ -39,7 +41,7 @@
                                     <span class="badge bg-warning">Pending</span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning text-white"
+                                    <button class="btn btn-sm btn-success text-white"
                                         @click="goDetail(item)">
                                         Detail
                                     </button>
@@ -61,7 +63,6 @@
         <div v-if="showModal" class="modal-backdrop-custom">
             <div class="modal-card">
 
-                <!-- HEADER COKELAT -->
                 <div class="modal-header-custom">
                     <h5 class="fw-bold mb-0">Tambah Permintaan</h5>
                     <button class="btn-close btn-close-white" @click="closeModal"></button>
@@ -112,7 +113,6 @@
                             placeholder="Masukkan Judul">
                     </div>
 
-                    <!-- MUNCUL SETELAH JUDUL -->
                     <div v-if="isStep1Valid">
                         <hr>
 
@@ -138,7 +138,7 @@
                     <button class="btn btn-danger" @click="closeModal">
                         Close
                     </button>
-                    <button class="btn btn-warning text-white"
+                    <button class="btn btn-success text-white"
                         :disabled="!isStep1Valid"
                         @click="submit">
                         Submit
@@ -151,25 +151,32 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import PanelLayout from '@/Layouts/PanelLayout/FinancePanelLayout.vue'
 defineOptions({ layout: PanelLayout })
 
 const showModal = ref(false)
 
 const form = ref({
-    nama:'Andi frfr',
+    nama:'Admin',
     nim:'123456789',
     type:'',
     periode:'',
     prodi:'Informatika',
     judul:'',
-    telp:'0823BakalaeKitaDua',
-    email:'test@example.com',
+    telp:'082312345678',
+    email:'admin@example.com',
     alamat:'Jl. Contoh No. 123'
 })
 
 const dataPermintaan = ref([])
+
+onMounted(() => {
+    const saved = localStorage.getItem('dataPermintaan')
+    if(saved){
+        dataPermintaan.value = JSON.parse(saved)
+    }
+})
 
 const isStep1Valid = computed(() =>
     form.value.type &&
@@ -183,6 +190,7 @@ function closeModal(){
 
 function submit(){
     dataPermintaan.value.push({ ...form.value })
+    localStorage.setItem('dataPermintaan', JSON.stringify(dataPermintaan.value))
     showModal.value = false
 }
 
@@ -216,16 +224,14 @@ function goDetail(item){
     flex-direction:column;
 }
 
-/* HEADER COKELAT */
 .modal-header-custom{
     padding:16px 20px;
-    background:#7a4a24;
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%) !important;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-/* PAKSA PUTIH */
 .modal-header-custom h5{
     color:white !important;
 }
