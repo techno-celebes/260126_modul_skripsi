@@ -21,11 +21,16 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/aktivitas', function () {
+    return Inertia::render('Aktivitas');
+})->middleware(['auth', 'verified'])->name('aktivitas');
+
 Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'verified'])->name('compre');
 
 Route::get('/kkn',[ KKNController::class,"indexx"])->middleware(['auth', 'verified'])->name('kkn');
 Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verified']);
 Route::get('/kkn/{id}', [KKNController::class, 'show'])->middleware(['auth', 'verified'])->name('kkn.show');
+Route::post('/kkn/{id}/aktivitas', [KKNController::class, 'storeAktivitas'])->middleware(['auth', 'verified'])->name('kkn.aktivitas.store');
 
 
 Route::post('/tugasakhir', [TugasAkhirController::class, 'store']);

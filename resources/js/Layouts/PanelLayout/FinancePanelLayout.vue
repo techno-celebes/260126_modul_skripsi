@@ -26,6 +26,13 @@
                         </Link>
                     </div>
 
+                    <!-- Aktivitas -->
+                    <div class="dropdown-s">
+                        <Link :href="route('aktivitas')" class="dropdown-toggle-s">
+                            <i class="fa fa-calendar"></i> Aktivitas
+                        </Link>
+                    </div>
+
                     <!-- Catatan -->
                     <div class="dropdown-s submenu-magang">
                         <a class="dropdown-toggle-s" @click.stop="toggleDropdown('magang')">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\KKN;
+use App\Models\KKNAktivitas;
 
 class KKNController extends Controller
 {
@@ -42,8 +43,38 @@ class KKNController extends Controller
     public function show($id)
     {
         $kkn = KKN::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        $aktivitas = KKNAktivitas::where('kkn_id', $id)->get();
+        
         return Inertia::render('kkn-detail', [
-            'kknData' => $kkn
+            'kknData' => $kkn,
+            'aktivitasList' => $aktivitas
         ]);
+    }
+
+    public function storeAktivitas(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'tipe' => 'required|in:harian,dokumen',
+            'judul' => 'required|string',
+            'deskripsi' => 'nullable|string',
+            'tanggal' => 'nullable|date',
+            'file' => 'nullable|file|mimes:jpg,png,pdf|max:2048'
+        ]);
+
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('kkn_aktivitas', 'public');
+        }
+
+        KKNAktivitas::create([
+            'kkn_id' => $id,
+            'tipe' => $validated['tipe'],
+            'judul' => $validated['judul'],
+            'deskripsi' => $validated['deskripsi'] ?? null,
+            'tanggal' => $validated['tanggal'] ?? null,
+            'file_path' => $filePath
+        ]);
+
+        return redirect()->route('kkn.show', $id);
     }
 }
