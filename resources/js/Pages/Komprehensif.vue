@@ -5,7 +5,7 @@
             <div>
                 <h1 class="h3 fw-bold text-dark mb-1">Dashboard</h1>
                 <p class="text-muted mb-0">
-                    Ini halaman komprehensif
+                    Ini halaman komprehensif dan segala fitur fiturnya
                 </p>
             </div>
         </div>
