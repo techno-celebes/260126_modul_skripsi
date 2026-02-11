@@ -9,7 +9,7 @@ use App\Models\KKNAktivitas;
 
 class KKNController extends Controller
 {
-    public function indexx()
+    public function index()
     {
         $kkn = KKN::where('user_id', auth()->id())->get();
         return Inertia::render('kkn', [

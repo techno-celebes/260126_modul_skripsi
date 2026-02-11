@@ -27,8 +27,8 @@ Route::get('/aktivitas', function () {
 
 Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'verified'])->name('compre');
 
-Route::get('/kkn',[ KKNController::class,"indexx"])->middleware(['auth', 'verified'])->name('kkn');
-Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verified']);
+Route::get('/kkn',[ KKNController::class,"index"])->middleware(['auth', 'verified'])->name('kkn');
+Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verified'])->name('kkn.store');
 Route::get('/kkn/{id}', [KKNController::class, 'show'])->middleware(['auth', 'verified'])->name('kkn.show');
 Route::post('/kkn/{id}/aktivitas', [KKNController::class, 'storeAktivitas'])->middleware(['auth', 'verified'])->name('kkn.aktivitas.store');
 

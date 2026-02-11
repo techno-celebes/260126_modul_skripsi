@@ -32,6 +32,12 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        
+        $user = Auth::user();
+        if (!$user->has_seen_splash) {
+            $request->session()->put('show_logo_splash', true);
+            $user->update(['has_seen_splash' => true]);
+        }
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
