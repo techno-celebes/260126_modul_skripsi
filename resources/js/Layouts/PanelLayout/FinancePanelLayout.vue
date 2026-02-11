@@ -1,4 +1,5 @@
 <template>
+    <OneTimeLogoSplash />
     <PanelLayout :app_tagline="app_tagline">
         <!-- Sidebar khusus Apps -->
         <template #sidebar>
@@ -63,6 +64,7 @@
     import '../../../css/master.css'
     import { Link, usePage } from '@inertiajs/vue3';
     import PanelLayout from "@/Layouts/PanelLayout.vue";
+    import OneTimeLogoSplash from '@/Components/OneTimeLogoSplash.vue';
     import { ref, provide, onMounted, onBeforeUnmount, watch } from 'vue'
 
     const activeDropdown = ref(null)

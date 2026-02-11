@@ -75,10 +75,10 @@
                     <label>Penanggung Jawab KKN</label>
                     <input class="form-control" placeholder="Masukkan Penanggung Jawab" v-model="form.penanggung_jawab">
                 </div>
-                <div class="mb-3">
+        <div class="mb-3">
                     <label>Durasi KKN</label>
                     <input class="form-control" placeholder="Contoh: 2 Bulan" v-model="form.durasi">
-                </div>
+                        </div>
             </div>
 
             <div class="modal-footer-custom">

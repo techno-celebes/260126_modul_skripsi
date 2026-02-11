@@ -34,6 +34,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'showLogoSplash' => $request->session()->pull('show_logo_splash', false),
         ];
     }
 }

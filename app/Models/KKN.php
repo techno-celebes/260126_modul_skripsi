@@ -22,4 +22,9 @@ class KKN extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function aktivitas()
+    {
+        return $this->hasMany(KKNAktivitas::class);
+    }
 }

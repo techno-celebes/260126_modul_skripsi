@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompreController;
 use App\Http\Controllers\KKNController;
 use App\Http\Controllers\TugasAkhirController;
+use App\Http\Controllers\AktivitasController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,8 +28,12 @@ Route::get('/aktivitas', function () {
 
 Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'verified'])->name('compre');
 
-Route::get('/kkn',[ KKNController::class,"indexx"])->middleware(['auth', 'verified'])->name('kkn');
-Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verified']);
+Route::get('/aktivitas/{id}', [AktivitasController::class, 'show'])
+    ->name('aktivitasd');
+
+
+Route::get('/kkn',[ KKNController::class,"index"])->middleware(['auth', 'verified'])->name('kkn');
+Route::post('/kkn', [KKNController::class, 'store'])->middleware(['auth', 'verified'])->name('kkn.store');
 Route::get('/kkn/{id}', [KKNController::class, 'show'])->middleware(['auth', 'verified'])->name('kkn.show');
 Route::post('/kkn/{id}/aktivitas', [KKNController::class, 'storeAktivitas'])->middleware(['auth', 'verified'])->name('kkn.aktivitas.store');
 

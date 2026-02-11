@@ -72,19 +72,25 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="ta-row">
-                                        <div class="ta-label">Nama</div>
+                                        <div class="ta-label">
+                                            <p>Nama</p>
+                                        </div>
                                         <div class="ta-value">
                                             {{ data.nama ?? "-" }}
                                         </div>
                                     </div>
                                     <div class="ta-row">
-                                        <div class="ta-label">NIM</div>
+                                        <div class="ta-label">
+                                            <p>NIM</p>
+                                        </div>
                                         <div class="ta-value">
                                             {{ data.nim ?? "-" }}
                                         </div>
                                     </div>
                                     <div class="ta-row">
-                                        <div class="ta-label">Fakultas</div>
+                                        <div class="ta-label">
+                                            <P>Fakultas</P>
+                                        </div>
                                         <div class="ta-value">
                                             {{
                                                 data.fakultas ?? "For Temporary"
@@ -92,7 +98,9 @@
                                         </div>
                                     </div>
                                     <div class="ta-row">
-                                        <div class="ta-label">Jurusan</div>
+                                        <div class="ta-label">
+                                            <P>Jurusan</P>
+                                        </div>
                                         <div class="ta-value">
                                             {{ data.prodi ?? "-" }}
                                         </div>
@@ -101,25 +109,33 @@
 
                                 <div class="col-md-6">
                                     <div class="ta-row">
-                                        <div class="ta-label">Topik</div>
+                                        <div class="ta-label">
+                                            <P>Topik</P>
+                                        </div>
                                         <div class="ta-value">
                                             {{ data.topik ?? "-" }}
                                         </div>
                                     </div>
                                     <div class="ta-row">
-                                        <div class="ta-label">Tanggal</div>
+                                        <div class="ta-label">
+                                            <P>Tanggal</P>
+                                        </div>
                                         <div class="ta-value">
                                             {{ tanggalFix }}
                                         </div>
                                     </div>
                                     <div class="ta-row">
-                                        <div class="ta-label">Judul</div>
+                                        <div class="ta-label">
+                                            <P>Judul</P>
+                                        </div>
                                         <div class="ta-value ta-long">
                                             {{ data.judul ?? "-" }}
                                         </div>
                                     </div>
                                     <div class="ta-row">
-                                        <div class="ta-label">Status</div>
+                                        <div class="ta-label">
+                                            <P>Status</P>
+                                        </div>
                                         <div class="ta-value">
                                             {{ data.status ?? "Pending" }}
                                         </div>
@@ -128,7 +144,9 @@
                             </div>
 
                             <div class="ta-row mt-3">
-                                <div class="ta-label">Abstrak</div>
+                                <div class="ta-label">
+                                    <P>Abstrak</P>
+                                </div>
                                 <div class="ta-value ta-long">
                                     {{ data.abstrak ?? "-" }}
                                 </div>
@@ -142,19 +160,25 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="ta-row">
-                                            <div class="ta-label">Nama</div>
+                                            <div class="ta-label">
+                                                <P>Nama</P>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ data.nama ?? "-" }}
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">NIM</div>
+                                            <div class="ta-label">
+                                                <P>NIM</P>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ data.nim ?? "-" }}
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">Fakultas</div>
+                                            <div class="ta-label">
+                                                <P>Fakultas</P>
+                                            </div>
                                             <div class="ta-value">
                                                 {{
                                                     data.fakultas ??
@@ -163,7 +187,9 @@
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">Jurusan</div>
+                                            <div class="ta-label">
+                                                <P>Jurusan</P>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ data.prodi ?? "-" }}
                                             </div>
@@ -172,25 +198,33 @@
 
                                     <div class="col-md-6">
                                         <div class="ta-row">
-                                            <div class="ta-label">Topik</div>
+                                            <div class="ta-label">
+                                                <P>Topik</P>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ data.topik ?? "-" }}
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">Tanggal</div>
+                                            <div class="ta-label">
+                                                <P>Tanggal</P>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ tanggalFix }}
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">Judul</div>
+                                            <div class="ta-label">
+                                                <P>Judul</P>
+                                            </div>
                                             <div class="ta-value ta-long">
                                                 {{ data.judul ?? "-" }}
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">Status</div>
+                                            <div class="ta-label">
+                                                <P>Status</P>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ data.status ?? "Pending" }}
                                             </div>
@@ -207,10 +241,11 @@
                             </div>
 
                             <!-- STATUS DOSEN -->
+                            <p>
                             <h5 class="fw-bold text-purple mb-3">
                                 Status Bimbingan Dosen Pembimbing
                             </h5>
-
+                            </p>
                             <div class="mb-3">
                                 <div
                                     class="d-flex align-items-center gap-2 mb-2"
@@ -229,10 +264,11 @@
                             </div>
 
                             <!-- CATATAN -->
+                            <p>
                             <h5 class="fw-bold text-purple mb-3 mt-4">
                                 Catatan Pembimbingan
                             </h5>
-
+                            </p>
                             <table class="table table-bordered">
                                 <thead
                                     style="background: #5b0892; color: white"
@@ -298,20 +334,24 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="ta-row">
-                                            <div class="ta-label">Nama</div>
+                                            <div class="ta-label">
+                                                <p>Nama</p>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ data.nama ?? "-" }}
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">NIM</div>
+                                            <div class="ta-label">
+                                                <p>NIM</p>
+                                            </div>
                                             <div class="ta-value">
                                                 {{ data.nim ?? "-" }}
                                             </div>
                                         </div>
                                         <div class="ta-row">
                                             <div class="ta-label">
-                                                Tanggal Pengajuan
+                                                <p>Tanggal Pengajuan</p>
                                             </div>
                                             <div class="ta-value">
                                                 {{ tanggalFix }}
@@ -322,20 +362,22 @@
                                     <div class="col-md-6">
                                         <div class="ta-row">
                                             <div class="ta-label">
-                                                Tahun Kurikulum
+                                                <p>Tahun Kurikulum</p>
                                             </div>
                                             <div class="ta-value">2020</div>
                                         </div>
                                         <div class="ta-row">
                                             <div class="ta-label">
-                                                Program Studi
+                                                <p>Program Studi</p>
                                             </div>
                                             <div class="ta-value">
-                                                {{ data.prodi ?? "-" }}
+                                                <span>{{ data.prodi ?? "-" }}</span>
                                             </div>
                                         </div>
                                         <div class="ta-row">
-                                            <div class="ta-label">Judul</div>
+                                            <div class="ta-label">
+                                                <p>Judul</p>
+                                            </div>
                                             <div class="ta-value ta-long">
                                                 {{ data.judul ?? "-" }}
                                             </div>
@@ -346,7 +388,7 @@
 
                             <!-- TOMBOL EDIT -->
                             <div class="d-flex justify-content-end mb-3">
-                                <button class="btn btn-primary">✏️ Edit</button>
+                                <button class="btn btn-primary" v-on:click="something">✏️ Edit</button>
                             </div>
 
                             <!-- TABEL SYARAT -->
@@ -419,6 +461,10 @@ onMounted(() => {
     const saved = localStorage.getItem("detailPermintaan");
     data.value = saved ? JSON.parse(saved) : {};
 });
+
+const something = ()=>{
+    alert("HELLOW")
+}
 
 const title = computed(() => {
     if (activeMenu.value === "data") return "Data Tugas Akhir";
