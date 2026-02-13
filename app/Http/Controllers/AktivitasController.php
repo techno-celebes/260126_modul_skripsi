@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\AktivitasMahasiswa;
+use App\Models\AktivitasMahasiswaLog;
 
 class AktivitasController extends Controller
 {
@@ -25,7 +26,7 @@ class AktivitasController extends Controller
             'keterangan' => 'required|string'
         ]);
 
-        AktivitasMahasiswa::create([
+        $aktivitas = AktivitasMahasiswa::create([
             'user_id' => auth()->id(),
             'nama' => $validated['nama'],
             'nim' => $validated['nim'],
@@ -34,14 +35,23 @@ class AktivitasController extends Controller
             'status' => 'Pending'
         ]);
 
+        // Auto create log
+        AktivitasMahasiswaLog::create([
+            'aktivitas_mahasiswa_id' => $aktivitas->id,
+            'judul' => 'Aktivitas dibuat'
+        ]);
+
         return redirect()->route('aktivitas');
     }
 
     public function show($id)
     {
         $aktivitas = AktivitasMahasiswa::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        $logs = AktivitasMahasiswaLog::where('aktivitas_mahasiswa_id', $id)->orderBy('created_at', 'desc')->get();
+        
         return Inertia::render('aktivitasd', [
-            'aktivitas' => $aktivitas
+            'aktivitas' => $aktivitas,
+            'logs' => $logs
         ]);
     }
 }
