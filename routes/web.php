@@ -22,14 +22,11 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/aktivitas', function () {
-    return Inertia::render('Aktivitas');
-})->middleware(['auth', 'verified'])->name('aktivitas');
+Route::get('/aktivitas', [AktivitasController::class, 'index'])->middleware(['auth', 'verified'])->name('aktivitas');
+Route::post('/aktivitas', [AktivitasController::class, 'store'])->middleware(['auth', 'verified'])->name('aktivitas.store');
+Route::get('/aktivitas/{id}', [AktivitasController::class, 'show'])->middleware(['auth', 'verified'])->name('aktivitasd');
 
 Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'verified'])->name('compre');
-
-Route::get('/aktivitas/{id}', [AktivitasController::class, 'show'])
-    ->name('aktivitasd');
 
 
 Route::get('/kkn',[ KKNController::class,"index"])->middleware(['auth', 'verified'])->name('kkn');

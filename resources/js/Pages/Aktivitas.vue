@@ -10,53 +10,8 @@
             </div>
         </div>
 
-        <!-- CARD ATAS -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div
-                                class="icon-box bg-primary bg-opacity-10 rounded-3 p-3 me-3"
-                            >
-                                <i class="fa fa-book text-primary fs-4"></i>
-                            </div>
-                            <h5 class="mb-0 fw-bold">Aktivitas Komprehensif</h5>
-                        </div>
-                        <p class="text-muted mb-3">
-                            Kelola dan pantau aktivitas ujian komprehensif Anda
-                        </p>
-                        <Link :href="route('compre')" class="btn btn-primary">
-                            Lihat Detail
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <div
-                                class="icon-box bg-success bg-opacity-10 rounded-3 p-3 me-3"
-                            >
-                                <i class="fa fa-list text-success fs-4"></i>
-                            </div>
-                            <h5 class="mb-0 fw-bold">Aktivitas Lainnya</h5>
-                        </div>
-                        <p class="text-muted mb-3">
-                            Lihat aktivitas akademik lainnya seperti KKN
-                        </p>
-                        <Link :href="route('kkn')" class="btn btn-success">
-                            Lihat Detail
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- ================== -->
-        <!-- TABEL BAWAH -->
+        <!-- TABEL AKTIVITAS -->
         <!-- ================== -->
 
         <div class="card">
@@ -126,7 +81,6 @@
         <!-- MODAL TAMBAH -->
         <!-- ================== -->
 
-        <!-- MODAL TAMBAH AKTIVITAS (STYLE KKN) -->
         <div v-if="showModal" class="modal-backdrop-custom">
             <div class="modal-card">
                 <div class="modal-header-custom">
@@ -196,26 +150,23 @@
 <script setup>
 import PanelLayout from "@/Layouts/PanelLayout/FinancePanelLayout.vue";
 import { ref, computed } from "vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router, usePage } from "@inertiajs/vue3";
 
 defineOptions({ layout: PanelLayout });
 
+const props = defineProps({
+    daftarAktivitas: {
+        type: Array,
+        default: () => []
+    }
+});
+
+const page = usePage();
 const showModal = ref(false);
 
-const daftarAktivitas = ref([
-    {
-        id: 1,
-        nama: "Admin",
-        nim: "123456789",
-        jenis: "Komperehensif",
-        keterangan: "Aktivitas Tugas",
-        status: "Pending",
-    },
-]);
-
 const form = ref({
-    nama: "Admin",
-    nim: "123456789",
+    nama: page.props.auth?.user?.name || "Admin",
+    nim: page.props.auth?.user?.nim || "123456789",
     jenis: "",
     keterangan: "",
 });
@@ -226,26 +177,16 @@ const isFormValid = computed(() => {
 
 function closeModal() {
     showModal.value = false;
+    form.value.jenis = "";
+    form.value.keterangan = "";
 }
 
 function submitForm() {
-    daftarAktivitas.value.push({
-        id: Date.now(),
-        nama: form.value.nama,
-        nim: form.value.nim,
-        jenis: form.value.jenis,
-        keterangan: form.value.keterangan,
-        status: "Pending",
+    router.post(route('aktivitas.store'), form.value, {
+        onSuccess: () => {
+            closeModal();
+        }
     });
-
-    form.value = {
-        nama: "Admin",
-        nim: "123456789",
-        jenis: "",
-        keterangan: "",
-    };
-
-    showModal.value = false;
 }
 </script>
 

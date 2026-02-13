@@ -1,18 +1,18 @@
 <template>
-    <div class="container-fluid py-4" style="padding-left:0!important;padding-right:0!important;">
+    <div class="container-fluid py-4">
         
         <!-- HEADER -->
-        <div class="d-flex justify-content-between align-items-center mb-4" style="padding-left:15px;padding-right:15px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="h3 fw-bold text-dark mb-1">Detail Aktivitas</h1>
                 <p class="text-muted mb-0">Informasi detail aktivitas mahasiswa</p>
             </div>
-            <button class="btn btn-secondary">
+            <Link :href="route('aktivitas')" class="btn btn-secondary">
                 Kembali
-            </button>
+            </Link>
         </div>
     
-        <div class="row g-3" style="margin-left:0;margin-right:0;padding-left:15px;padding-right:15px;">
+        <div class="row g-3">
             
             <!-- SIDEBAR -->
             <div class="col-md-3">
@@ -171,7 +171,15 @@
     </template>
     
     <script setup>
+    import PanelLayout from "@/Layouts/PanelLayout/FinancePanelLayout.vue";
     import { ref } from 'vue'
+    import { Link } from "@inertiajs/vue3";
+    
+    defineOptions({ layout: PanelLayout });
+    
+    defineProps({
+        aktivitas: Object
+    });
     
     const activeTab = ref('detail')
     const subTab = ref('harian')
