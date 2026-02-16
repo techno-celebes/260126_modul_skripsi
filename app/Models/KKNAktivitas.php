@@ -14,7 +14,13 @@ class KKNAktivitas extends Model
         'judul',
         'deskripsi',
         'tanggal',
-        'file_path'
+        'file_path',
+        'nilai',
+        'status_validasi',
+        'divalidasi_oleh',
+        'tanggal_validasi',
+        'catatan_nilai',
+        'is_selesai'
     ];
 
     public function kkn()

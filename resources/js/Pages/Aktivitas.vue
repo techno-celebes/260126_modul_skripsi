@@ -16,16 +16,11 @@
 
         <div class="card">
             <div class="card-body">
-                <div
-                    class="d-flex justify-content-between align-items-center mb-3"
-                >
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold mb-0">Daftar Aktivitas Mahasiswa</h5>
-                    <button
-                        class="btn btn-warning text-dark"
-                        @click="showModal = true"
-                    >
+                    <!-- <button class="btn btn-warning text-dark" @click="showModal = true">
                         Tambah Aktivitas
-                    </button>
+                    </button> -->
                 </div>
 
                 <div class="table-responsive">
@@ -52,7 +47,7 @@
                                 <td>{{ item.jenis }}</td>
                                 <td>{{ item.keterangan }}</td>
                                 <td>
-                                    <span class="badge bg-warning">
+                                    <span class="badge" :class="getStatusBadgeClass(item.status)">
                                         {{ item.status }}
                                     </span>
                                 </td>
@@ -188,6 +183,19 @@ function submitForm() {
         }
     });
 }
+
+function getStatusBadgeClass(status) {
+    const map = {
+        'Pending': 'bg-warning text-dark',
+        'Menunggu': 'bg-warning text-dark',
+        'Disetujui': 'bg-success text-white',
+        'Divalidasi': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white',
+        'Selesai': 'bg-primary text-white',
+        'Proses': 'bg-info text-white'
+    }
+    return map[status] || 'bg-secondary text-white'
+}
 </script>
 
 <style scoped>
@@ -198,6 +206,15 @@ function submitForm() {
 .table th {
     background-color: #f8f9fa;
     font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    padding: 16px 12px;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 12px;
 }
 
 .icon-box {

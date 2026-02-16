@@ -1,404 +1,221 @@
 <template>
-    <div class="container-fluid py-4">
-        <div class="row">
-            <!-- SIDEBAR -->
-            <div class="col-md-3">
-                <div class="card sidebar">
-                    <ul class="list-group list-group-flush">
-                        <li
-                            class="list-group-item"
-                            :class="{ active: activeMenu === 'data' }"
-                            @click="activeMenu = 'data'"
-                        >
-                            Data Tugas Akhir
-                        </li>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-bold text-dark mb-1">Detail Permintaan Akademik</h1>
+            <p class="text-muted mb-0">{{ permintaan?.nama }}</p>
+        </div>
+        <button class="btn btn-secondary" @click="$inertia.visit('/tugasakhir')">
+            Kembali
+        </button>
+    </div>
 
-                        <div class="divider"></div>
-
-                        <li
-                            class="list-group-item"
-                            :class="{ active: activeMenu === 'bimbingan' }"
-                            @click="activeMenu = 'bimbingan'"
-                        >
-                            Bimbingan Tugas Akhir
-                        </li>
-
-                        <div class="divider"></div>
-
-                        <li
-                            class="list-group-item"
-                            :class="{ active: activeMenu === 'syarat' }"
-                            @click="activeMenu = 'syarat'"
-                        >
-                            Syarat Ujian
-                        </li>
-
-                        <div class="divider"></div>
-
-                        <li
-                            class="list-group-item"
-                            :class="{ active: activeMenu === 'jadwal' }"
-                            @click="activeMenu = 'jadwal'"
-                        >
-                            Jadwal Ujian
-                        </li>
-
-                        <div class="divider"></div>
-
-                        <li
-                            class="list-group-item"
-                            :class="{ active: activeMenu === 'nilai' }"
-                            @click="activeMenu = 'nilai'"
-                        >
-                            Nilai Ujian
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- KONTEN -->
-            <div class="col-md-9">
-                <div class="d-flex justify-content-between mb-3">
-                    <h4 class="fw-bold">{{ title }}</h4>
-                    <button class="btn btn-success" @click="back">
-                        ← Kembali
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body p-2">
+                    <button class="btn w-100 mb-2 tab-button" :class="activeTab === 'detail' ? 'btn-success' : 'btn-light'" @click="activeTab = 'detail'">
+                        <i class="fa fa-info-circle me-2"></i>Detail Permintaan
+                    </button>
+                    <button class="btn w-100 mb-2 tab-button" :class="activeTab === 'progress' ? 'btn-success' : 'btn-light'" @click="activeTab = 'progress'">
+                        <i class="fa fa-tasks me-2"></i>Progress
+                    </button>
+                    <button class="btn w-100 mb-2 tab-button" :class="activeTab === 'bimbingan' ? 'btn-success' : 'btn-light'" @click="activeTab = 'bimbingan'">
+                        <i class="fa fa-book me-2"></i>Bimbingan
+                    </button>
+                    <button class="btn w-100 mb-2 tab-button" :class="activeTab === 'syarat' ? 'btn-success' : 'btn-light'" @click="activeTab = 'syarat'">
+                        <i class="fa fa-check-square me-2"></i>Syarat Ujian
+                    </button>
+                    <button class="btn w-100 mb-2 tab-button" :class="activeTab === 'jadwal' ? 'btn-success' : 'btn-light'" @click="activeTab = 'jadwal'">
+                        <i class="fa fa-calendar me-2"></i>Jadwal Ujian
+                    </button>
+                    <button class="btn w-100 tab-button" :class="activeTab === 'nilai' ? 'btn-success' : 'btn-light'" @click="activeTab = 'nilai'">
+                        <i class="fa fa-star me-2"></i>Nilai Ujian
                     </button>
                 </div>
+            </div>
+        </div>
 
-                <div class="card content-card">
-                    <div class="card-body">
-                        <!-- DATA -->
-                        <div v-if="activeMenu === 'data'" class="ta-wrapper">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <p>Nama</p>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <!-- DETAIL -->
+                    <div v-if="activeTab === 'detail'">
+                        <h5 class="fw-bold mb-3">Detail Permintaan</h5>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Nama</label>
+                            <p class="text-dark">{{ permintaan?.nama || '-' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">NIM</label>
+                            <p class="text-dark">{{ permintaan?.nim || '-' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Jenis Permintaan</label>
+                            <p class="text-dark">{{ permintaan?.type || '-' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Periode</label>
+                            <p class="text-dark">{{ permintaan?.periode || '-' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Program Studi</label>
+                            <p class="text-dark">{{ permintaan?.prodi || '-' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Judul</label>
+                            <p class="text-dark">{{ permintaan?.judul || '-' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Dosen Pembimbing</label>
+                            <p class="text-dark">{{ permintaan?.dosen_pembimbing || 'Belum ditentukan' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Tanggal Pengajuan</label>
+                            <p class="text-dark">{{ formatDate(permintaan?.tanggal_pengajuan) }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold text-dark">Status</label>
+                            <p><span class="badge" :class="getStatusClass(permintaan?.status_proposal)">{{ permintaan?.status_proposal || 'Menunggu' }}</span></p>
+                        </div>
+                    </div>
+
+                    <!-- PROGRESS -->
+                    <div v-if="activeTab === 'progress'">
+                        <h5 class="fw-bold mb-3">Progress</h5>
+
+                        <!-- Sub Tabs -->
+                        <ul class="nav nav-tabs mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link" :class="{ active: subTab === 'timeline' }" @click="subTab = 'timeline'" style="cursor: pointer;">
+                                    Timeline Progress
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" :class="{ active: subTab === 'asistensi' }" @click="subTab = 'asistensi'" style="cursor: pointer;">
+                                    Upload Asistensi
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Timeline -->
+                        <div v-if="subTab === 'timeline'">
+                            <div class="timeline">
+                                <div v-for="item in progressList" :key="item.id" class="timeline-item" :class="{'completed': item.is_selesai}">
+                                    <div class="timeline-content">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <h6 class="mb-1 fw-bold">
+                                                    <i class="fa me-2" :class="item.is_selesai ? 'fa-check-circle text-success' : 'fa-circle-o text-warning'"></i>
+                                                    {{ item.judul }}
+                                                </h6>
+                                                <p class="text-muted small mb-1">{{ item.deskripsi }}</p>
+                                            </div>
+                                            <span class="badge badge-status" :class="item.is_selesai ? 'bg-success text-white' : 'bg-warning text-dark'">
+                                                {{ item.is_selesai ? 'Selesai' : 'Proses' }}
+                                            </span>
                                         </div>
-                                        <div class="ta-value">
-                                            {{ data.nama ?? "-" }}
+                                        <div class="text-muted small">
+                                            <i class="fa fa-calendar me-1"></i>{{ formatDate(item.tanggal) }}
                                         </div>
-                                    </div>
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <p>NIM</p>
-                                        </div>
-                                        <div class="ta-value">
-                                            {{ data.nim ?? "-" }}
-                                        </div>
-                                    </div>
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <P>Fakultas</P>
-                                        </div>
-                                        <div class="ta-value">
-                                            {{
-                                                data.fakultas ?? "For Temporary"
-                                            }}
-                                        </div>
-                                    </div>
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <P>Jurusan</P>
-                                        </div>
-                                        <div class="ta-value">
-                                            {{ data.prodi ?? "-" }}
+                                        <div v-if="item.divalidasi_oleh" class="mt-2">
+                                            <span class="badge bg-info">
+                                                <i class="fa fa-user me-1"></i>{{ item.divalidasi_oleh }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <P>Topik</P>
-                                        </div>
-                                        <div class="ta-value">
-                                            {{ data.topik ?? "-" }}
-                                        </div>
-                                    </div>
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <P>Tanggal</P>
-                                        </div>
-                                        <div class="ta-value">
-                                            {{ tanggalFix }}
-                                        </div>
-                                    </div>
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <P>Judul</P>
-                                        </div>
-                                        <div class="ta-value ta-long">
-                                            {{ data.judul ?? "-" }}
-                                        </div>
-                                    </div>
-                                    <div class="ta-row">
-                                        <div class="ta-label">
-                                            <P>Status</P>
-                                        </div>
-                                        <div class="ta-value">
-                                            {{ data.status ?? "Pending" }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="ta-row mt-3">
-                                <div class="ta-label">
-                                    <P>Abstrak</P>
-                                </div>
-                                <div class="ta-value ta-long">
-                                    {{ data.abstrak ?? "-" }}
+                                <div v-if="progressList.length === 0" class="text-center text-muted py-4">
+                                    <i class="fa fa-info-circle fa-2x mb-2"></i>
+                                    <p>Belum ada progress</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- BIMBINGAN -->
-                        <div v-if="activeMenu === 'bimbingan'">
-                            <!-- DATA RINGKAS -->
-                            <div class="ta-wrapper mb-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>Nama</P>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ data.nama ?? "-" }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>NIM</P>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ data.nim ?? "-" }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>Fakultas</P>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{
-                                                    data.fakultas ??
-                                                    "For Temporary"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>Jurusan</P>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ data.prodi ?? "-" }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>Topik</P>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ data.topik ?? "-" }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>Tanggal</P>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ tanggalFix }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>Judul</P>
-                                            </div>
-                                            <div class="ta-value ta-long">
-                                                {{ data.judul ?? "-" }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <P>Status</P>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ data.status ?? "Pending" }}
-                                            </div>
-                                        </div>
-                                    </div>
+                        <!-- Upload Asistensi -->
+                        <div v-if="subTab === 'asistensi'">
+                            <!-- Form Upload -->
+                            <div class="mb-4 p-3 border rounded">
+                                <div class="mb-3">
+                                    <label>Judul Asistensi</label>
+                                    <input class="form-control" placeholder="Masukkan Judul" v-model="uploadForm.judul">
                                 </div>
-                            </div>
-
-                            <!-- TOMBOL TAMBAH BIMBINGAN (POSISI SESUAI GAMBAR) -->
-                            <div class="d-flex justify-content-end mb-4">
-                                <button class="btn btn-primary">
-                                    + Tambah Bimbingan
+                                <div class="mb-3">
+                                    <label>Deskripsi</label>
+                                    <textarea class="form-control" rows="3" placeholder="Masukkan Deskripsi" v-model="uploadForm.deskripsi"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label>File (Maks 10MB - PDF/DOC/DOCX)</label>
+                                    <input type="file" class="form-control" @change="e=>uploadForm.file=e.target.files[0]" accept=".pdf,.doc,.docx">
+                                </div>
+                                <button class="btn btn-success" :disabled="!isUploadValid" @click="submitUpload">
+                                    Upload Asistensi
                                 </button>
                             </div>
 
-                            <!-- STATUS DOSEN -->
-                            <p>
-                            <h5 class="fw-bold text-purple mb-3">
-                                Status Bimbingan Dosen Pembimbing
-                            </h5>
-                            </p>
-                            <div class="mb-3">
-                                <div
-                                    class="d-flex align-items-center gap-2 mb-2"
-                                >
-                                    <b>Muhammad Syafaat, S.E., M.S.A., Ak.</b>
-                                    <span class="badge bg-warning text-dark">
-                                        Masih proses pembimbingan
-                                    </span>
-                                </div>
-                                <div class="d-flex align-items-center gap-2">
-                                    <b>Jafar Sadik, S.Kom., M.T.I.</b>
-                                    <span class="badge bg-warning text-dark">
-                                        Masih proses pembimbingan
-                                    </span>
-                                </div>
+                            <!-- Tabel Data -->
+                            <h6 class="fw-bold mb-2">Data Asistensi</h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Judul</th>
+                                            <th>Deskripsi</th>
+                                            <th>Tanggal</th>
+                                            <th>File</th>
+                                            <th>Status</th>
+                                            <th>Divalidasi Oleh</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in asistensiList" :key="item.id">
+                                            <td>{{ index + 1 }}</td>
+                                            <td>{{ item.judul }}</td>
+                                            <td>{{ item.deskripsi || '-' }}</td>
+                                            <td>{{ formatDate(item.tanggal) }}</td>
+                                            <td>
+                                                <a v-if="item.file_path" :href="`/storage/${item.file_path}`" target="_blank" class="btn btn-sm btn-info text-white">
+                                                    Lihat
+                                                </a>
+                                                <span v-else>-</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge" :class="getValidasiClass(item.status_validasi)">
+                                                    {{ item.status_validasi || 'Menunggu' }}
+                                                </span>
+                                            </td>
+                                            <td>{{ item.divalidasi_oleh || '-' }}</td>
+                                        </tr>
+                                        <tr v-if="asistensiList.length === 0">
+                                            <td colspan="7" class="text-center text-muted">Belum ada data</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-
-                            <!-- CATATAN -->
-                            <p>
-                            <h5 class="fw-bold text-purple mb-3 mt-4">
-                                Catatan Pembimbingan
-                            </h5>
-                            </p>
-                            <table class="table table-bordered">
-                                <thead
-                                    style="background: #5b0892; color: white"
-                                >
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Judul</th>
-                                        <th>Catatan</th>
-                                        <th>Tanggal Bimbingan</th>
-                                        <th>Status</th>
-                                        <th>Dosen</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Deskripsi penelitian dikurangi</td>
-                                        <td>Tambah pembahasan penelitian</td>
-                                        <td>23 Juni 2025</td>
-                                        <td>Masih perlu bimbingan</td>
-                                        <td>Muhammad Syafaat</td>
-                                        <td>
-                                            <button
-                                                class="btn btn-sm btn-primary"
-                                            >
-                                                ✏️
-                                            </button>
-                                            <button
-                                                class="btn btn-sm btn-danger"
-                                            >
-                                                🗑️
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Acc</td>
-                                        <td>Acc</td>
-                                        <td>01 Juli 2025</td>
-                                        <td>Masih perlu bimbingan</td>
-                                        <td>Jafar Sadik</td>
-                                        <td>
-                                            <button
-                                                class="btn btn-sm btn-primary"
-                                            >
-                                                ✏️
-                                            </button>
-                                            <button
-                                                class="btn btn-sm btn-danger"
-                                            >
-                                                🗑️
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
+                    </div>
 
-                        <div v-if="activeMenu === 'syarat'">
-                            <!-- SYARAT UJIAN -->
-                            <div class="ta-wrapper mb-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <p>Nama</p>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ data.nama ?? "-" }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <p>NIM</p>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ data.nim ?? "-" }}
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <p>Tanggal Pengajuan</p>
-                                            </div>
-                                            <div class="ta-value">
-                                                {{ tanggalFix }}
-                                            </div>
-                                        </div>
-                                    </div>
+                    <!-- BIMBINGAN -->
+                    <div v-if="activeTab === 'bimbingan'">
+                        <h5 class="fw-bold mb-3">Bimbingan</h5>
+                        <div class="alert alert-info">
+                            Fitur bimbingan akan segera tersedia.
+                        </div>
+                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <p>Tahun Kurikulum</p>
-                                            </div>
-                                            <div class="ta-value">2020</div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <p>Program Studi</p>
-                                            </div>
-                                            <div class="ta-value">
-                                                <span>{{ data.prodi ?? "-" }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="ta-row">
-                                            <div class="ta-label">
-                                                <p>Judul</p>
-                                            </div>
-                                            <div class="ta-value ta-long">
-                                                {{ data.judul ?? "-" }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- TOMBOL EDIT -->
-                            <div class="d-flex justify-content-end mb-3">
-                                <button class="btn btn-primary" v-on:click="something">✏️ Edit</button>
-                            </div>
-
-                            <!-- TABEL SYARAT -->
-                            <table class="table table-bordered">
-                                <thead class="thead-purple">
+                    <!-- SYARAT -->
+                    <div v-if="activeTab === 'syarat'">
+                        <h5 class="fw-bold mb-3">Syarat Ujian</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
                                     <tr>
                                         <th>No</th>
-                                        <th>Syarat Ujian</th>
+                                        <th>Syarat</th>
                                         <th>Wajib</th>
-                                        <th>Terpenuhi</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -406,162 +223,250 @@
                                         <td>1</td>
                                         <td>Kartu Bimbingan</td>
                                         <td>Ya</td>
-                                        <td>
-                                            <span class="badge bg-success"
-                                                >Sudah</span
-                                            >
-                                        </td>
+                                        <td><span class="badge bg-danger">Belum</span></td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
                                         <td>Transkrip Nilai</td>
                                         <td>Ya</td>
-                                        <td>
-                                            <span class="badge bg-danger"
-                                                >Belum</span
-                                            >
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Bukti Pembayaran</td>
-                                        <td>Ya</td>
-                                        <td>
-                                            <span class="badge bg-success"
-                                                >Sudah</span
-                                            >
-                                        </td>
+                                        <td><span class="badge bg-danger">Belum</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                        <div v-if="activeMenu === 'jadwal'">
-                            <p>JADWAL</p>
+                    <!-- JADWAL -->
+                    <div v-if="activeTab === 'jadwal'">
+                        <h5 class="fw-bold mb-3">Jadwal Ujian</h5>
+                        <div class="alert alert-info">
+                            Jadwal ujian belum tersedia.
                         </div>
-                    <div v-if="activeMenu === 'nilai'">
-                        <p>Konten nilai...</p>
                     </div>
+
+                    <!-- NILAI -->
+                    <div v-if="activeTab === 'nilai'">
+                        <h5 class="fw-bold mb-3">Nilai Progress</h5>
+                        
+                        <div v-if="nilaiList.length > 0">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Judul</th>
+                                            <th>Tanggal</th>
+                                            <th>Nilai</th>
+                                            <th>Status</th>
+                                            <th>Catatan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in nilaiList" :key="item.id">
+                                            <td>{{ index + 1 }}</td>
+                                            <td>{{ item.judul }}</td>
+                                            <td>{{ formatDate(item.tanggal) }}</td>
+                                            <td>
+                                                <span v-if="item.nilai" class="badge bg-primary fs-6">{{ item.nilai }}</span>
+                                                <span v-else class="text-muted">-</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge" :class="getValidasiClass(item.status_validasi)">
+                                                    {{ item.status_validasi || 'Menunggu' }}
+                                                </span>
+                                            </td>
+                                            <td>{{ item.catatan_nilai || '-' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Rata-rata Nilai</h6>
+                                            <h2 class="fw-bold text-primary">{{ rataRataNilai }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Total Dinilai</h6>
+                                            <h2 class="fw-bold text-success">{{ totalDinilai }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-else class="alert alert-info">
+                            Belum ada nilai untuk permintaan ini.
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import PanelLayout from "@/Layouts/PanelLayout/FinancePanelLayout.vue";
-defineOptions({ layout: PanelLayout });
+import { ref, computed } from 'vue'
+import { router } from '@inertiajs/vue3'
+import PanelLayout from '@/Layouts/PanelLayout/FinancePanelLayout.vue'
 
-const activeMenu = ref("data");
-const data = ref({});
+defineOptions({ layout: PanelLayout })
 
-onMounted(() => {
-    const saved = localStorage.getItem("detailPermintaan");
-    data.value = saved ? JSON.parse(saved) : {};
-});
+const props = defineProps({
+    permintaan: Object,
+    progress: {
+        type: Array,
+        default: () => []
+    }
+})
 
-const something = ()=>{
-    alert("HELLOW")
+const activeTab = ref('detail')
+const subTab = ref('timeline')
+
+const uploadForm = ref({
+    judul: '',
+    deskripsi: '',
+    file: null
+})
+
+const progressList = computed(() => {
+    return props.progress.filter(p => p.jenis_progress === 'progress' || p.jenis_progress === 'proposal')
+})
+
+const asistensiList = computed(() => {
+    return props.progress.filter(p => p.jenis_progress === 'asistensi')
+})
+
+const nilaiList = computed(() => {
+    return props.progress.filter(p => p.jenis_progress === 'asistensi' && p.file_path)
+})
+
+const rataRataNilai = computed(() => {
+    const nilaiArray = nilaiList.value.filter(item => item.nilai).map(item => parseFloat(item.nilai))
+    if (nilaiArray.length === 0) return '0.00'
+    const sum = nilaiArray.reduce((a, b) => a + b, 0)
+    return (sum / nilaiArray.length).toFixed(2)
+})
+
+const totalDinilai = computed(() => {
+    return nilaiList.value.filter(item => item.nilai).length
+})
+
+const isUploadValid = computed(() => {
+    return uploadForm.value.judul.trim() !== '' && uploadForm.value.file !== null
+})
+
+function formatDate(date) {
+    if (!date) return '-'
+    return new Date(date).toLocaleDateString('id-ID', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    })
 }
 
-const title = computed(() => {
-    if (activeMenu.value === "data") return "Data Tugas Akhir";
-    if (activeMenu.value === "bimbingan") return "Bimbingan Tugas Akhir";
-    if (activeMenu.value === "syarat") return "Syarat Ujian";
-    if (activeMenu.value === "jadwal") return "Jadwal Ujian";
-    if (activeMenu.value === "nilai") return "Nilai Ujian";
-});
-
-function formatTanggal(date) {
-    const bulan = [
-        "Januari",
-        "Februari",
-        "Maret",
-        "April",
-        "Mei",
-        "Juni",
-        "Juli",
-        "Agustus",
-        "September",
-        "Oktober",
-        "November",
-        "Desember",
-    ];
-    const d = new Date(date);
-    return `${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
+function getStatusClass(status) {
+    const map = {
+        'Menunggu': 'bg-warning text-dark',
+        'Disetujui': 'bg-success text-white',
+        'Divalidasi': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white',
+        'Selesai': 'bg-primary text-white',
+        'Proses': 'bg-info text-white'
+    }
+    return map[status] || 'bg-secondary text-white'
 }
 
-const tanggalFix = computed(() => {
-    return formatTanggal(data.value.created_at || new Date());
-});
+function getValidasiClass(status) {
+    const map = {
+        'Menunggu': 'bg-warning text-dark',
+        'Divalidasi': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white'
+    }
+    return map[status] || 'bg-secondary text-white'
+}
 
-function back() {
-    window.history.back();
+function submitUpload() {
+    const formData = new FormData()
+    formData.append('jenis_progress', 'asistensi')
+    formData.append('judul', uploadForm.value.judul)
+    formData.append('deskripsi', uploadForm.value.deskripsi)
+    formData.append('file', uploadForm.value.file)
+
+    router.post(`/tugasakhir/${props.permintaan.id}/progress`, formData, {
+        onSuccess: () => {
+            uploadForm.value = { judul: '', deskripsi: '', file: null }
+        }
+    })
 }
 </script>
 
 <style scoped>
-.sidebar {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    background: white;
+.card{
+    border-radius:12px;
 }
 
-.sidebar .list-group {
-    padding: 10px;
+.tab-button{
+    text-align:left;
+    font-weight:600;
+    transition:all 0.3s ease;
 }
 
-.sidebar .list-group-item {
-    border: none;
-    border-radius: 12px;
-    padding: 12px 16px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    font-weight: 500;
-    color: #2d3748;
-    background: #f1f5f9;
-    transition: 0.25s;
+.tab-button:hover{
+    transform:translateX(5px);
 }
 
-.sidebar .list-group-item:hover {
-    background: #e6f4ee;
+.table th{
+    background-color:#f8f9fa;
+    font-weight:600;
+    text-align: center;
+    vertical-align: middle;
+    padding: 16px 12px;
 }
 
-.sidebar .active {
-    background: #2f855a !important;
-    color: white !important;
-    font-weight: 600;
-    box-shadow: 0 4px 10px rgba(47, 133, 90, 0.35);
+.table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 12px;
 }
 
-.content-card {
-    border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.timeline {
+    position: relative;
 }
 
-.ta-row {
-    display: flex;
-    border-bottom: 1px solid #eee;
-    padding: 12px 0;
+.timeline-item {
+    position: relative;
+    padding-bottom: 20px;
 }
 
-.ta-label {
-    width: 200px;
-    font-weight: 600;
+.timeline-content {
+    background: transparent;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 3px solid #ffc107;
 }
 
-.ta-value {
-    flex: 1;
+.timeline-item.completed .timeline-content {
+    border-left-color: #28a745;
 }
 
-.ta-row:hover {
-    background: #f8fdfb;
+.badge-status {
+    flex-shrink: 0;
+    align-self: flex-start;
+    line-height: 1.5;
+    padding: 0.35em 0.65em;
 }
 
-.text-purple {
-    color: #5b0892;
+input, select, textarea{
+    border-radius:6px;
+    font-size:14px;
 }
 </style>

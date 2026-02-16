@@ -4,25 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AktivitasMahasiswa extends Model
+class PermintaanAkademik extends Model
 {
-    protected $table = 'aktivitas_mahasiswa';
+    protected $table = 'permintaan_akademiks';
     
     protected $fillable = [
         'user_id',
         'nama',
         'nim',
-        'jenis',
-        'keterangan',
-        'status',
+        'type',
+        'periode',
+        'prodi',
         'judul',
         'dosen_pembimbing',
         'dosen_pembimbing_id',
         'tanggal_pengajuan',
         'tanggal_persetujuan',
+        'status',
         'status_proposal',
         'disetujui_oleh',
-        'is_selesai'
+        'is_selesai',
+        'keterangan'
     ];
 
     protected $casts = [
@@ -36,8 +38,8 @@ class AktivitasMahasiswa extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function logs()
+    public function progress()
     {
-        return $this->hasMany(AktivitasMahasiswaLog::class, 'aktivitas_mahasiswa_id');
+        return $this->hasMany(PermintaanAkademikProgress::class);
     }
 }

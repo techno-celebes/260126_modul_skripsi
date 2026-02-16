@@ -27,30 +27,72 @@
                         </Link>
                     </div>
 
-                    <!-- Aktivitas -->
-                    <div class="dropdown-s">
-                        <Link :href="route('aktivitas')" class="dropdown-toggle-s">
-                            <i class="fa fa-calendar"></i> Aktivitas
-                        </Link>
-                    </div>
-
-                    <!-- Catatan -->
-                    <div class="dropdown-s submenu-magang">
-                        <a class="dropdown-toggle-s" @click.stop="toggleDropdown('magang')">
-                            <i class="fa fa-file-text-o"></i> Magang
-                            <i class="ml-2 bi" :class="activeDropdown === 'magang' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
-                        </a>
-                        <div class="dropdown-menu-s" :class="{ 'show': activeDropdown === 'magang' }">
-                            <Link :href="route('kkn')" class="span-title-menu not-default-size">KKN</Link>
-                            <hr />
+                    <!-- Menu untuk MAHASISWA saja -->
+                    <template v-if="$page.props.auth.user.role === 'mahasiswa'">
+                        <!-- Aktivitas -->
+                        <div class="dropdown-s">
+                            <Link :href="route('aktivitas')" class="dropdown-toggle-s">
+                                <i class="fa fa-calendar"></i> Aktivitas
+                            </Link>
                         </div>
-                    </div>
-                    
-                    <div class="dropdown-s submenu-laporan">
-                        <Link href= "/tugasakhir" class="dropdown-toggle-s">
-                            <i class="fa fa-file-text-o"></i> Tugas Akhir
-                        </Link>
-                    </div>
+
+                        <!-- Nilai -->
+                        <div class="dropdown-s">
+                            <Link :href="route('nilai')" class="dropdown-toggle-s">
+                                <i class="fa fa-star"></i> Nilai Saya
+                            </Link>
+                        </div>
+
+                        <!-- Magang/KKN -->
+                        <div class="dropdown-s submenu-magang">
+                            <a class="dropdown-toggle-s" @click.stop="toggleDropdown('magang')">
+                                <i class="fa fa-briefcase"></i> Magang & KKN
+                                <i class="ml-2 bi" :class="activeDropdown === 'magang' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
+                            </a>
+                            <div class="dropdown-menu-s" :class="{ 'show': activeDropdown === 'magang' }">
+                                <Link :href="route('kkn')" class="span-title-menu not-default-size">KKN</Link>
+                                <hr />
+                            </div>
+                        </div>
+                        
+                        <!-- Permintaan Akademik -->
+                        <div class="dropdown-s submenu-laporan">
+                            <Link href="/tugasakhir" class="dropdown-toggle-s">
+                                <i class="fa fa-graduation-cap"></i> Permintaan Akademik
+                            </Link>
+                        </div>
+                    </template>
+
+                    <!-- Menu untuk ADMIN saja -->
+                    <template v-if="$page.props.auth.user.role === 'admin'">
+                        <!-- Kelola Mahasiswa -->
+                        <div class="dropdown-s">
+                            <Link :href="route('admin.mahasiswa')" class="dropdown-toggle-s">
+                                <i class="fa fa-users"></i> Kelola Mahasiswa
+                            </Link>
+                        </div>
+
+                        <!-- Validasi Permintaan -->
+                        <div class="dropdown-s">
+                            <Link :href="route('admin.validasi')" class="dropdown-toggle-s">
+                                <i class="fa fa-check-square"></i> Validasi Permintaan
+                            </Link>
+                        </div>
+
+                        <!-- Penilaian -->
+                        <div class="dropdown-s">
+                            <Link :href="route('admin.penilaian')" class="dropdown-toggle-s">
+                                <i class="fa fa-star"></i> Penilaian
+                            </Link>
+                        </div>
+
+                        <!-- Laporan -->
+                        <div class="dropdown-s">
+                            <Link :href="route('admin.laporan')" class="dropdown-toggle-s">
+                                <i class="fa fa-file-text"></i> Laporan
+                            </Link>
+                        </div>
+                    </template>
                 </div>
             </div>
         </template>

@@ -1,208 +1,285 @@
 <template>
-    <div class="container-fluid py-4">
+<div class="container-fluid py-4">
 
-        <!-- HEADER -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="h3 fw-bold text-dark mb-1">Tugas Akhir</h1>
-                <p class="text-muted mb-0">Tambahkan Permintaan Anda</p>
-            </div>
-
-            <!-- TOMBOL HIJAU -->
-            <button class="btn btn-success text-white" @click="showModal = true">
-                Tambah Permintaan
-            </button>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-bold text-dark mb-1">Permintaan Akademik</h1>
+            <p class="text-muted mb-0">Kelola permintaan akademik Anda</p>
         </div>
+        <button class="btn btn-warning text-dark" @click="showModal = true">
+            Tambah Permintaan
+        </button>
+    </div>
 
-        <!-- TABLE -->
-        <div class="card mb-4">
+    <!-- TABS -->
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link" :class="{active: activeTab === 'list'}" @click="activeTab = 'list'" style="cursor:pointer">
+                Daftar Permintaan
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" :class="{active: activeTab === 'pengaturan'}" @click="activeTab = 'pengaturan'" style="cursor:pointer">
+                Pengaturan
+            </a>
+        </li>
+    </ul>
+
+    <!-- TAB CONTENT -->
+    <div v-if="activeTab === 'list'">
+        <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>NIM</th>
-                                <th>Type</th>
+                                <th>Jenis</th>
                                 <th>Judul</th>
+                                <th>Dosen Pembimbing</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item, index) in dataPermintaan" :key="index">
+                            <tr v-for="(item, index) in dataPermintaan" :key="item.id">
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ item.nama }}</td>
                                 <td>{{ item.nim }}</td>
                                 <td>{{ item.type }}</td>
                                 <td>{{ item.judul }}</td>
+                                <td>{{ item.dosen_pembimbing || '-' }}</td>
+                                <td><span class="badge" :class="getStatusClass(item.status_proposal)">{{ item.status_proposal }}</span></td>
                                 <td>
-                                    <span class="badge bg-warning">Pending</span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-success text-white"
-                                        @click="goDetail(item)">
-                                        Detail
+                                    <button class="btn btn-sm btn-warning" @click="$inertia.visit(`/tugasakhir/${item.id}`)">
+                                        <i class="fa fa-pencil"></i>
                                     </button>
                                 </td>
                             </tr>
-
                             <tr v-if="dataPermintaan.length === 0">
-                                <td colspan="7" class="text-center text-muted">
-                                    Belum ada data permintaan
-                                </td>
+                                <td colspan="8" class="text-center text-muted">Belum ada data permintaan akademik</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- MODAL TAMBAH -->
-        <div v-if="showModal" class="modal-backdrop-custom">
-            <div class="modal-card">
-
-                <div class="modal-header-custom">
-                    <h5 class="fw-bold mb-0">Tambah Permintaan</h5>
-                    <button class="btn-close btn-close-white" @click="closeModal"></button>
+    <div v-if="activeTab === 'pengaturan'">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">PENGATURAN PERMINTAAN AKADEMIK</h5>
+                <p class="text-muted">Diberitahukan kepada seluruh mahasiswa tingkat akhir bahwa pelaksanaan Permintaan Akademik diatur berdasarkan ketentuan sebagai berikut:</p>
+                
+                <div class="mt-4">
+                    <h6 class="fw-bold text-primary">A. Ketentuan Umum</h6>
+                    <ol>
+                        <li>Permintaan akademik merupakan proses wajib yang harus dilakukan mahasiswa sebagai syarat kelulusan.</li>
+                        <li>Mahasiswa yang berhak mengajukan adalah mahasiswa yang telah memenuhi persyaratan akademik sesuai ketentuan program studi.</li>
+                        <li>Pelaksanaan dilakukan secara individual, kecuali ditentukan lain oleh program studi.</li>
+                    </ol>
                 </div>
 
-                <div class="modal-body-custom">
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>Nama Mahasiswa</label>
-                            <input class="form-control" v-model="form.nama" disabled>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>NIM</label>
-                            <input class="form-control" v-model="form.nim" disabled>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Type Permintaan</label>
-                        <select class="form-select" v-model="form.type">
-                            <option value="">---</option>
-                            <option>Proposal-Skripsi</option>
-                            <option>Proposal-Artikel</option>
-                            <option>Komperehensif</option>
-                            <option>Seminar Hasil-Skripsi</option>
-                            <option>Seminar Hasil-Artikel</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Periode Akademik</label>
-                        <select class="form-select" v-model="form.periode">
-                            <option value="">---</option>
-                            <option>Periode Gasal</option>
-                            <option>Periode Genap</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Program Studi</label>
-                        <input class="form-control" v-model="form.prodi" disabled>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Judul Permintaan</label>
-                        <input class="form-control" v-model="form.judul"
-                            placeholder="Masukkan Judul">
-                    </div>
-
-                    <div v-if="isStep1Valid">
-                        <hr>
-
-                        <div class="mb-3">
-                            <label>No Telp</label>
-                            <input class="form-control" v-model="form.telp" disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input class="form-control" v-model="form.email" disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Alamat</label>
-                            <input class="form-control" v-model="form.alamat" disabled>
-                        </div>
-                    </div>
-
+                <div class="mt-4">
+                    <h6 class="fw-bold text-primary">B. Persyaratan Pengajuan</h6>
+                    <ol>
+                        <li>Mahasiswa telah lulus mata kuliah prasyarat.</li>
+                        <li>Mahasiswa telah memenuhi jumlah Satuan Kredit Semester (SKS) minimum sesuai ketentuan.</li>
+                        <li>Mahasiswa telah melakukan registrasi pada semester berjalan.</li>
+                        <li>Mahasiswa mengajukan judul sesuai bidang keilmuan program studi.</li>
+                    </ol>
                 </div>
 
-                <div class="modal-footer-custom">
-                    <button class="btn btn-danger" @click="closeModal">
-                        Close
-                    </button>
-                    <button class="btn btn-success text-white"
-                        :disabled="!isStep1Valid"
-                        @click="submit">
-                        Submit
-                    </button>
+                <div class="mt-4">
+                    <h6 class="fw-bold text-primary">C. Pembimbingan</h6>
+                    <ol>
+                        <li>Setiap mahasiswa akan dibimbing oleh satu atau dua dosen pembimbing yang ditetapkan oleh program studi.</li>
+                        <li>Mahasiswa wajib melakukan bimbingan secara berkala dan terdokumentasi.</li>
+                        <li>Pergantian dosen pembimbing hanya dapat dilakukan dengan persetujuan program studi.</li>
+                        <li>Mahasiswa bertanggung jawab atas keaktifan dalam proses bimbingan.</li>
+                    </ol>
+                </div>
+
+                <div class="mt-4">
+                    <h6 class="fw-bold text-primary">D. Pelaksanaan dan Penulisan</h6>
+                    <ol>
+                        <li>Penulisan wajib mengikuti pedoman yang ditetapkan oleh fakultas/program studi.</li>
+                        <li>Isi harus bersifat orisinal dan bebas dari plagiarisme.</li>
+                        <li>Mahasiswa wajib melakukan pengecekan plagiarisme sesuai ambang batas yang ditentukan.</li>
+                        <li>Segala bentuk pelanggaran akademik akan dikenakan sanksi sesuai peraturan yang berlaku.</li>
+                    </ol>
+                </div>
+
+                <div class="mt-4">
+                    <h6 class="fw-bold text-primary">E. Ujian</h6>
+                    <ol>
+                        <li>Mahasiswa yang telah memenuhi persyaratan administrasi dan akademik berhak mengikuti ujian.</li>
+                        <li>Ujian dilaksanakan sesuai jadwal yang ditetapkan oleh program studi.</li>
+                        <li>Mahasiswa wajib hadir tepat waktu dan mematuhi tata tertib ujian.</li>
+                        <li>Hasil ujian ditetapkan oleh tim penguji.</li>
+                    </ol>
+                </div>
+
+                <div class="alert alert-info mt-4">
+                    <i class="fa fa-info-circle me-2"></i>
+                    <strong>Catatan:</strong> Mahasiswa diharapkan selalu memantau informasi resmi terkait Permintaan Akademik melalui media yang ditentukan.
                 </div>
             </div>
         </div>
-
     </div>
+
+    <!-- MODAL -->
+    <div v-if="showModal" class="modal-backdrop-custom">
+        <div class="modal-card">
+            <div class="modal-header-custom">
+                <h5 class="fw-bold mb-0">Tambah Permintaan Akademik</h5>
+                <button class="btn-close" @click="closeModal"></button>
+            </div>
+
+            <div class="modal-body-custom">
+                <div class="mb-3">
+                    <label>Nama Mahasiswa</label>
+                    <input class="form-control" v-model="form.nama" disabled>
+                </div>
+                <div class="mb-3">
+                    <label>NIM</label>
+                    <input class="form-control" v-model="form.nim" disabled>
+                </div>
+                <div class="mb-3">
+                    <label>Jenis Permintaan</label>
+                    <select class="form-control" v-model="form.type">
+                        <option value="">-- Pilih --</option>
+                        <option>Proposal Skripsi</option>
+                        <option>Proposal Artikel</option>
+                        <option>Komprehensif</option>
+                        <option>Seminar Hasil Skripsi</option>
+                        <option>Seminar Hasil Artikel</option>
+                        <option>Ujian Skripsi</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Periode Akademik</label>
+                    <select class="form-control" v-model="form.periode">
+                        <option value="">-- Pilih --</option>
+                        <option>Periode Gasal 2025/2026</option>
+                        <option>Periode Genap 2025/2026</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Program Studi</label>
+                    <input class="form-control" v-model="form.prodi" disabled>
+                </div>
+                <div class="mb-3">
+                    <label>Judul</label>
+                    <textarea class="form-control" rows="3" v-model="form.judul" placeholder="Masukkan judul"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer-custom">
+                <button class="btn btn-danger text-white" @click="closeModal">Close</button>
+                <button class="btn btn-warning text-dark" :disabled="!isFormValid" @click="submitForm">Submit</button>
+            </div>
+        </div>
+    </div>
+
+</div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
+import { router, usePage } from '@inertiajs/vue3'
 import PanelLayout from '@/Layouts/PanelLayout/FinancePanelLayout.vue'
+
 defineOptions({ layout: PanelLayout })
 
-const showModal = ref(false)
-
-const form = ref({
-    nama:'Admin',
-    nim:'123456789',
-    type:'',
-    periode:'',
-    prodi:'Informatika',
-    judul:'',
-    telp:'082312345678',
-    email:'admin@example.com',
-    alamat:'Jl. Contoh No. 123'
-})
-
-const dataPermintaan = ref([])
-
-onMounted(() => {
-    const saved = localStorage.getItem('dataPermintaan')
-    if(saved){
-        dataPermintaan.value = JSON.parse(saved)
+const props = defineProps({
+    dataPermintaan: {
+        type: Array,
+        default: () => []
     }
 })
 
-const isStep1Valid = computed(() =>
-    form.value.type &&
-    form.value.periode &&
-    form.value.judul
+const page = usePage()
+const showModal = ref(false)
+const activeTab = ref('list')
+
+const form = ref({
+    nama: page.props.auth?.user?.name || 'Admin',
+    nim: page.props.auth?.user?.nim || '123456789',
+    type: '',
+    periode: '',
+    prodi: 'Teknik Informatika',
+    judul: ''
+})
+
+const isFormValid = computed(() =>
+    form.value.type && form.value.periode && form.value.judul.trim()
 )
+
+function getStatusClass(status) {
+    const map = {
+        'Menunggu': 'bg-warning text-dark',
+        'Disetujui': 'bg-success text-white',
+        'Divalidasi': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white',
+        'Selesai': 'bg-primary text-white',
+        'Proses': 'bg-info text-white'
+    }
+    return map[status] || 'bg-secondary text-white'
+}
 
 function closeModal(){
     showModal.value = false
+    form.value.type = ''
+    form.value.periode = ''
+    form.value.judul = ''
 }
 
-function submit(){
-    dataPermintaan.value.push({ ...form.value })
-    localStorage.setItem('dataPermintaan', JSON.stringify(dataPermintaan.value))
-    showModal.value = false
-}
-
-function goDetail(item){
-    localStorage.setItem('detailPermintaan', JSON.stringify(item))
-    window.location.href = '/tugasakhir/detail'
+function submitForm(){
+    router.post('/tugasakhir', form.value, {
+        onSuccess: () => {
+            closeModal()
+        }
+    })
 }
 </script>
 
 <style scoped>
 .card{
     border-radius:12px;
+}
+
+.table th{
+    background-color:#f8f9fa;
+    font-weight:600;
+    text-align: center;
+    vertical-align: middle;
+    padding: 16px 12px;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 12px;
+}
+
+.nav-tabs .nav-link{
+    color:#6c757d;
+    font-weight:500;
+}
+
+.nav-tabs .nav-link.active{
+    color:#495057;
+    font-weight:600;
+    border-color:#dee2e6 #dee2e6 #fff;
+}
+
+input, select, textarea{
+    border-radius:6px;
+    font-size:14px;
 }
 
 .modal-backdrop-custom{
@@ -216,7 +293,7 @@ function goDetail(item){
 }
 
 .modal-card{
-    width:700px;
+    width:520px;
     max-height:90vh;
     background:white;
     border-radius:12px;
@@ -226,14 +303,10 @@ function goDetail(item){
 
 .modal-header-custom{
     padding:16px 20px;
-    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%) !important;
+    border-bottom:1px solid #e5e7eb;
     display:flex;
     justify-content:space-between;
     align-items:center;
-}
-
-.modal-header-custom h5{
-    color:white !important;
 }
 
 .modal-body-custom{
@@ -248,10 +321,5 @@ function goDetail(item){
     display:flex;
     justify-content:flex-end;
     gap:10px;
-}
-
-input, select{
-    border-radius:6px;
-    font-size:14px;
 }
 </style>

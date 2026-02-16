@@ -1,6 +1,6 @@
 <template>
-<div class="container-fluid py-4" style="padding-left: 0 !important; padding-right: 0 !important;">
-    <div class="d-flex justify-content-between align-items-center mb-4" style="padding-left: 15px; padding-right: 15px;">
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="h3 fw-bold text-dark mb-1">Detail KKN</h1>
             <p class="text-muted mb-0">{{ kknData.nama }}</p>
@@ -10,7 +10,7 @@
         </button>
     </div>
 
-    <div class="row g-3" style="margin-left: 0; margin-right: 0; padding-left: 15px; padding-right: 15px;">
+    <div class="row g-3">
         <div class="col-md-3">
             <div class="card">
                 <div class="card-body p-2">
@@ -63,7 +63,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="fw-bold text-dark">Status</label>
-                            <p><span class="badge bg-secondary">{{ kknData.status }}</span></p>
+                            <p><span class="badge" :class="getStatusBadgeClass(kknData.status)">{{ kknData.status }}</span></p>
                         </div>
                     </div>
 
@@ -150,17 +150,75 @@
                     </div>
 
                     <div v-if="activeTab === 'penilaian'">
-                        <h5 class="fw-bold mb-3">Penilaian</h5>
-                        <div class="alert alert-info">
-                            Penilaian akan ditampilkan setelah dosen pembimbing memberikan nilai.
+                        <h5 class="fw-bold mb-3">Penilaian KKN</h5>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tipe</th>
+                                        <th>Judul</th>
+                                        <th>Tanggal</th>
+                                        <th>Nilai</th>
+                                        <th>Status</th>
+                                        <th>Catatan</th>
+                                        <th>Divalidasi Oleh</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in aktivitasList.filter(a => a.nilai)" :key="item.id">
+                                        <td>{{ index + 1 }}</td>
+                                        <td>{{ ucfirst(item.tipe) }}</td>
+                                        <td>{{ item.judul }}</td>
+                                        <td>{{ item.tanggal || '-' }}</td>
+                                        <td>
+                                            <span v-if="item.nilai" class="badge bg-primary fs-6">{{ item.nilai }}</span>
+                                            <span v-else class="text-muted">-</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge" :class="getStatusClass(item.status_validasi)">
+                                                {{ item.status_validasi || 'Menunggu' }}
+                                            </span>
+                                        </td>
+                                        <td>{{ item.catatan_nilai || '-' }}</td>
+                                        <td>{{ item.divalidasi_oleh || '-' }}</td>
+                                    </tr>
+                                    <tr v-if="aktivitasList.filter(a => a.nilai).length === 0">
+                                        <td colspan="8" class="text-center text-muted">
+                                            Belum ada penilaian
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="mb-3">
-                            <label class="fw-bold">Nilai Akhir</label>
-                            <p class="fs-4">-</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="fw-bold">Catatan Pembimbing</label>
-                            <p>Belum ada catatan</p>
+
+                        <!-- Statistik Nilai -->
+                        <div class="row g-3 mt-3">
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Rata-rata Nilai</h6>
+                                        <h2 class="fw-bold text-primary">{{ rataRataNilai }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Total Dinilai</h6>
+                                        <h2 class="fw-bold text-success">{{ totalDinilai }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-muted">Menunggu Penilaian</h6>
+                                        <h2 class="fw-bold text-warning">{{ totalMenunggu }}</h2>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,6 +285,48 @@ const filteredAktivitas = computed(() => {
     return props.aktivitasList.filter(item => item.tipe === subTab.value)
 })
 
+const rataRataNilai = computed(() => {
+    const nilaiArray = props.aktivitasList.filter(item => item.nilai).map(item => parseFloat(item.nilai))
+    if (nilaiArray.length === 0) return '0.00'
+    const sum = nilaiArray.reduce((a, b) => a + b, 0)
+    return (sum / nilaiArray.length).toFixed(2)
+})
+
+const totalDinilai = computed(() => {
+    return props.aktivitasList.filter(item => item.nilai).length
+})
+
+const totalMenunggu = computed(() => {
+    return props.aktivitasList.filter(item => item.file_path && !item.nilai && item.status_validasi !== 'Ditolak').length
+})
+
+function ucfirst(str) {
+    if (!str) return ''
+    return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+function getStatusClass(status) {
+    const map = {
+        'Menunggu': 'bg-warning text-dark',
+        'Divalidasi': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white'
+    }
+    return map[status] || 'bg-secondary'
+}
+
+function getStatusBadgeClass(status) {
+    const map = {
+        'Pending': 'bg-warning text-dark',
+        'Menunggu': 'bg-warning text-dark',
+        'Disetujui': 'bg-success text-white',
+        'Divalidasi': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white',
+        'Selesai': 'bg-primary text-white',
+        'Proses': 'bg-info text-white'
+    }
+    return map[status] || 'bg-secondary text-white'
+}
+
 function uploadAktivitas() {
     const form = useForm({
         tipe: subTab.value,
@@ -267,6 +367,20 @@ function openDetail(item) {
 
 .tab-button:hover{
     transform:translateX(5px);
+}
+
+.table th{
+    background-color:#f8f9fa;
+    font-weight:600;
+    text-align: center;
+    vertical-align: middle;
+    padding: 16px 12px;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 12px;
 }
 
 input, select, textarea{

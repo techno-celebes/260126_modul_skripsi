@@ -25,6 +25,6 @@ class KKN extends Model
 
     public function aktivitas()
     {
-        return $this->hasMany(KKNAktivitas::class);
+        return $this->hasMany(KKNAktivitas::class, 'kkn_id');
     }
 }

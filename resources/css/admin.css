@@ -142,6 +142,7 @@ tr.student-input .form-control {
 
 body {
     font-family: "Acme", sans-serif;
+    background-color: #ffffff;
 }
 
 body::before {
@@ -152,11 +153,11 @@ body::before {
     right: 0;
     bottom: 0;
     background-image: url('/assets/img/group3.svg');
-    background-repeat: repeat; /* Mengulangi gambar secara horizontal dan vertikal */
-    background-position: top left; /* Mengatur posisi awal pengulangan */
-    background-size: 6rem; /* Memastikan gambar berulang sesuai ukuran aslinya */
+    background-repeat: repeat;
+    background-position: top left;
+    background-size: 6rem;
     filter: hue-rotate(180deg);
-    opacity: 0.24;
+    opacity: 0.03;
     z-index: -1;
     height: 100%;
 }

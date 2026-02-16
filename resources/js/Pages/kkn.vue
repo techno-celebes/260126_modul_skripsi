@@ -35,7 +35,7 @@
                             <td>{{ item.alamat }}</td>
                             <td>{{ item.penanggung_jawab }}</td>
                             <td>{{ item.durasi }}</td>
-                            <td><span class="badge bg-warning">{{ item.status }}</span></td>
+                            <td><span class="badge" :class="getStatusBadgeClass(item.status)">{{ item.status }}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-warning" @click="$inertia.visit(`/kkn/${item.id}`)">
                                     <i class="fa fa-pencil"></i>
@@ -130,6 +130,19 @@ function submitForm(){
         }
     })
 }
+
+function getStatusBadgeClass(status) {
+    const map = {
+        'Pending': 'bg-warning text-dark',
+        'Menunggu': 'bg-warning text-dark',
+        'Disetujui': 'bg-success text-white',
+        'Divalidasi': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white',
+        'Selesai': 'bg-primary text-white',
+        'Proses': 'bg-info text-white'
+    }
+    return map[status] || 'bg-secondary text-white'
+}
 </script>
 
 <style scoped>
@@ -140,6 +153,15 @@ function submitForm(){
 .table th{
     background-color:#f8f9fa;
     font-weight:600;
+    text-align: center;
+    vertical-align: middle;
+    padding: 16px 12px;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 12px;
 }
 
 .modal-backdrop-custom{

@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AktivitasMahasiswaLog extends Model
+class PermintaanAkademikProgress extends Model
 {
-    protected $table = 'aktivitas_mahasiswa_log';
+    protected $table = 'permintaan_akademik_progress';
     
     protected $fillable = [
-        'aktivitas_mahasiswa_id',
-        'jenis_log',
+        'permintaan_akademik_id',
+        'jenis_progress',
         'judul',
         'deskripsi',
         'tanggal',
@@ -29,8 +29,13 @@ class AktivitasMahasiswaLog extends Model
         'tanggal_validasi' => 'date'
     ];
 
-    public function aktivitas()
+    public function permintaan()
     {
-        return $this->belongsTo(AktivitasMahasiswa::class, 'aktivitas_mahasiswa_id');
+        return $this->belongsTo(PermintaanAkademik::class, 'permintaan_akademik_id');
+    }
+    
+    public function permintaanAkademik()
+    {
+        return $this->belongsTo(PermintaanAkademik::class, 'permintaan_akademik_id');
     }
 }

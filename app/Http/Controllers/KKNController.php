@@ -27,13 +27,23 @@ class KKNController extends Controller
             'durasi' => 'required|string'
         ]);
 
-        KKN::create([
+        $kkn = KKN::create([
             'user_id' => auth()->id(),
             'nama' => $validated['nama'],
             'nim' => $validated['nim'],
             'alamat' => $validated['alamat'],
             'penanggung_jawab' => $validated['penanggung_jawab'],
             'durasi' => $validated['durasi'],
+            'status' => 'Pending'
+        ]);
+
+        // Auto sync ke aktivitas mahasiswa
+        \App\Models\AktivitasMahasiswa::create([
+            'user_id' => auth()->id(),
+            'nama' => $validated['nama'],
+            'nim' => $validated['nim'],
+            'jenis' => 'KKN',
+            'keterangan' => 'KKN di ' . $validated['alamat'] . ' selama ' . $validated['durasi'],
             'status' => 'Pending'
         ]);
 
@@ -74,6 +84,22 @@ class KKNController extends Controller
             'tanggal' => $validated['tanggal'] ?? null,
             'file_path' => $filePath
         ]);
+
+        // Auto sync ke aktivitas mahasiswa log
+        $aktivitas = \App\Models\AktivitasMahasiswa::where('user_id', auth()->id())
+            ->where('jenis', 'KKN')
+            ->latest()
+            ->first();
+            
+        if ($aktivitas) {
+            \App\Models\AktivitasMahasiswaLog::create([
+                'aktivitas_mahasiswa_id' => $aktivitas->id,
+                'judul' => $validated['judul'],
+                'deskripsi' => $validated['deskripsi'],
+                'tanggal' => $validated['tanggal'],
+                'file_path' => $filePath
+            ]);
+        }
 
         return redirect()->route('kkn.show', $id);
     }

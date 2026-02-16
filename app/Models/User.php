@@ -21,8 +21,25 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'nim',
         'has_seen_splash',
     ];
+
+    public function aktivitas()
+    {
+        return $this->hasMany(\App\Models\AktivitasMahasiswa::class);
+    }
+
+    public function permintaan()
+    {
+        return $this->hasMany(\App\Models\PermintaanAkademik::class);
+    }
+
+    public function kkn()
+    {
+        return $this->hasMany(\App\Models\KKN::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
