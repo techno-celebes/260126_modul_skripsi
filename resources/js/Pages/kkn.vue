@@ -1,18 +1,18 @@
 <template>
 <div class="container-fluid py-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 animate-fade-in">
         <div>
-            <h1 class="h3 fw-bold text-dark mb-1">Kuliah Kerja Nyata (KKN)</h1>
+            <h1 class="h3 fw-bold text-dark mb-1" style="font-size: 1.75rem;">Kuliah Kerja Nyata (KKN)</h1>
             <p class="text-muted mb-0">Daftar Pengajuan KKN</p>
         </div>
         <button class="btn btn-warning text-dark" @click="showModal = true">
-            Tambah Pengajuan
+            <i class="fa fa-plus me-2"></i>Tambah Pengajuan
         </button>
     </div>
 
-    <div class="card">
-        <div class="card-body">
+    <div class="card animate-slide-in">
+        <div class="card-body p-4">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -29,8 +29,8 @@
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in daftarKKN" :key="item.id">
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ item.nama }}</td>
+                            <td><strong>{{ index + 1 }}</strong></td>
+                            <td><strong>{{ item.nama }}</strong></td>
                             <td>{{ item.nim }}</td>
                             <td>{{ item.alamat }}</td>
                             <td>{{ item.penanggung_jawab }}</td>
@@ -43,7 +43,10 @@
                             </td>
                         </tr>
                         <tr v-if="daftarKKN.length === 0">
-                            <td colspan="8" class="text-center text-muted">Belum ada data pengajuan KKN</td>
+                            <td colspan="8" class="text-center text-muted py-5">
+                                <i class="fa fa-inbox fa-3x mb-3 d-block" style="opacity: 0.3;"></i>
+                                <p class="mb-0">Belum ada data pengajuan KKN</p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -51,39 +54,41 @@
         </div>
     </div>
 
-    <div v-if="showModal" class="modal-backdrop-custom">
+    <div v-if="showModal" class="modal-backdrop-custom" @click.self="closeModal">
         <div class="modal-card">
             <div class="modal-header-custom">
-                <h5 class="fw-bold mb-0">Tambah Pengajuan KKN</h5>
+                <h5 class="fw-bold mb-0" style="font-size: 1.125rem;">Tambah Pengajuan KKN</h5>
                 <button class="btn-close" @click="closeModal"></button>
             </div>
 
             <div class="modal-body-custom">
                 <div class="mb-3">
-                    <label>Nama Mahasiswa</label>
-                    <input class="form-control" v-model="form.nama" disabled>
+                    <label for="nama-mahasiswa" class="form-label fw-semibold d-block">Nama Mahasiswa</label>
+                    <input id="nama-mahasiswa" name="nama" class="form-control" v-model="form.nama" disabled>
                 </div>
                 <div class="mb-3">
-                    <label>NIM</label>
-                    <input class="form-control" v-model="form.nim" disabled>
+                    <label for="nim" class="form-label fw-semibold d-block">NIM</label>
+                    <input id="nim" name="nim" class="form-control" v-model="form.nim" disabled>
                 </div>
                 <div class="mb-3">
-                    <label>Alamat KKN</label>
-                    <input class="form-control" placeholder="Masukkan Alamat KKN" v-model="form.alamat">
+                    <label for="alamat-kkn" class="form-label fw-semibold d-block">Alamat KKN <span class="text-danger">*</span></label>
+                    <input id="alamat-kkn" name="alamat" class="form-control" placeholder="Masukkan Alamat KKN" v-model="form.alamat">
                 </div>
                 <div class="mb-3">
-                    <label>Penanggung Jawab KKN</label>
-                    <input class="form-control" placeholder="Masukkan Penanggung Jawab" v-model="form.penanggung_jawab">
+                    <label for="penanggung-jawab" class="form-label fw-semibold d-block">Penanggung Jawab KKN <span class="text-danger">*</span></label>
+                    <input id="penanggung-jawab" name="penanggung_jawab" class="form-control" placeholder="Masukkan Penanggung Jawab" v-model="form.penanggung_jawab">
                 </div>
-        <div class="mb-3">
-                    <label>Durasi KKN</label>
-                    <input class="form-control" placeholder="Contoh: 2 Bulan" v-model="form.durasi">
-                        </div>
+                <div class="mb-3">
+                    <label for="durasi-kkn" class="form-label fw-semibold d-block">Durasi KKN <span class="text-danger">*</span></label>
+                    <input id="durasi-kkn" name="durasi" class="form-control" placeholder="Contoh: 2 Bulan" v-model="form.durasi">
+                </div>
             </div>
 
             <div class="modal-footer-custom">
-                <button class="btn btn-danger text-white" @click="closeModal">Close</button>
-                <button class="btn btn-warning text-dark" :disabled="!isFormValid" @click="submitForm">Submit</button>
+                <button class="btn btn-danger text-white" @click="closeModal">Batal</button>
+                <button class="btn btn-warning text-dark" :disabled="!isFormValid" @click="submitForm">
+                    <i class="fa fa-check me-2"></i>Submit
+                </button>
             </div>
         </div>
     </div>
@@ -146,85 +151,5 @@ function getStatusBadgeClass(status) {
 </script>
 
 <style scoped>
-.card{
-    border-radius:12px;
-}
-
-.table th{
-    background-color:#f8f9fa;
-    font-weight:600;
-    text-align: center;
-    vertical-align: middle;
-    padding: 16px 12px;
-}
-
-.table td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 14px 12px;
-}
-
-.modal-backdrop-custom{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
-
-.modal-card{
-    width:520px;
-    max-height:90vh;
-    background:white;
-    border-radius:12px;
-    display:flex;
-    flex-direction:column;
-}
-
-.modal-card-large{
-    width:900px;
-    max-height:90vh;
-    background:white;
-    border-radius:12px;
-    display:flex;
-    flex-direction:column;
-}
-
-.modal-card-large{
-    width:900px;
-    max-height:90vh;
-    background:white;
-    border-radius:12px;
-    display:flex;
-    flex-direction:column;
-}
-
-.modal-header-custom{
-    padding:16px 20px;
-    border-bottom:1px solid #e5e7eb;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.modal-body-custom{
-    flex:1;
-    padding:18px 20px;
-    overflow-y:auto;
-}
-
-.modal-footer-custom{
-    padding:16px 20px;
-    border-top:1px solid #e5e7eb;
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
-}
-
-input, select, textarea{
-    border-radius:6px;
-    font-size:14px;
-}
+.form-label { margin-bottom: 8px; color: #374151; }
 </style>

@@ -16,13 +16,6 @@
 
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0">Daftar Aktivitas Mahasiswa</h5>
-                    <!-- <button class="btn btn-warning text-dark" @click="showModal = true">
-                        Tambah Aktivitas
-                    </button> -->
-                </div>
-
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>

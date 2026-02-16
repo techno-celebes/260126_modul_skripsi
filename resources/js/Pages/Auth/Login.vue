@@ -33,18 +33,18 @@ const submit = () => {
     <GuestLayout>
         <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-            {{ status }}
+        <div v-if="status" class="mb-4 p-4 rounded-xl bg-green-50 border-l-4 border-green-500 text-green-700 animate-fade-in">
+            <i class="fa fa-check-circle me-2"></i>{{ status }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email atau NIM/NIP" />
+        <form @submit.prevent="submit" class="space-y-6">
+            <div class="animate-slide-in">
+                <InputLabel for="email" value="Email atau NIM/NIP" class="text-gray-700 font-semibold mb-2" />
 
                 <TextInput
                     id="email"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mt-2 block w-full"
                     v-model="form.email"
                     required
                     autofocus
@@ -55,45 +55,45 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <div class="animate-slide-in" style="animation-delay: 0.1s;">
+                <InputLabel for="password" value="Password" class="text-gray-700 font-semibold mb-2" />
 
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-2 block w-full"
                     v-model="form.password"
                     required
                     autocomplete="current-password"
+                    placeholder="Masukkan password"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4 block">
-                <label class="flex items-center">
+            <div class="flex items-center justify-between animate-slide-in" style="animation-delay: 0.2s;">
+                <label class="flex items-center cursor-pointer">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600"
-                        >Remember me</span
-                    >
+                    <span class="ms-2 text-sm text-gray-600 font-medium">Remember me</span>
                 </label>
-            </div>
 
-            <div class="mt-4 flex items-center justify-end">
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="text-sm text-green-600 hover:text-green-700 font-semibold transition-colors duration-200"
                 >
-                    Forgot your password?
+                    Lupa password?
                 </Link>
+            </div>
 
+            <div class="animate-slide-in" style="animation-delay: 0.3s;">
                 <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
+                    class="w-full justify-center"
+                    :class="{ 'opacity-50': form.processing }"
                     :disabled="form.processing"
                 >
-                    Log in
+                    <i class="fa fa-sign-in me-2"></i>
+                    {{ form.processing ? 'Memproses...' : 'Masuk' }}
                 </PrimaryButton>
             </div>
         </form>

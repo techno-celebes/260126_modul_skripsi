@@ -1,3 +1,258 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Modern Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+.animate-slide-in { animation: slideIn 0.5s ease-out; }
+.animate-scale-in { animation: scaleIn 0.3s ease-out; }
+
+/* Smooth Transitions */
+* { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+
+/* Modern Card Styles */
+.card {
+    border: none !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+    transform: translateY(-2px);
+}
+
+/* Modern Buttons - FORCE OVERRIDE */
+.btn {
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.3px !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+}
+
+/* FORCE SMALL BUTTON SIZE */
+.btn-sm, 
+.btn.btn-sm, 
+button.btn-sm,
+table .btn-sm,
+.table .btn-sm,
+td .btn-sm,
+.table tbody td .btn-sm,
+.table-responsive .btn-sm {
+    padding: 6px 10px !important;
+    font-size: 0.875rem !important;
+    height: 32px !important;
+    width: auto !important;
+    min-height: unset !important;
+    min-width: unset !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+}
+
+.btn-sm.btn-warning {
+    padding: 6px 12px !important;
+}
+
+.btn-sm i, 
+.btn-sm .fa {
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    display: inline-block !important;
+}
+
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; }
+.btn:active { transform: translateY(0); }
+
+.btn-warning {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+    color: #1a1a1a !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #38a169 0%, #2d7a4f 100%) !important;
+    color: white !important;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    color: white !important;
+}
+
+/* Modern Form Inputs */
+.form-control, .form-select {
+    border-radius: 8px !important;
+    border: 2px solid #e5e7eb !important;
+    padding: 10px 14px !important;
+    font-size: 0.875rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #38a169 !important;
+    box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1) !important;
+    outline: none !important;
+}
+
+/* Modern Table */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead th {
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.5px;
+    padding: 14px 16px !important;
+    text-align: center !important;
+}
+
+.table tbody td {
+    padding: 12px 16px !important;
+    vertical-align: middle !important;
+    font-size: 0.875rem !important;
+    text-align: center !important;
+}
+
+.table tbody td .btn,
+.table tbody td button {
+    padding: 6px 12px !important;
+    font-size: 0.875rem !important;
+    height: auto !important;
+    width: auto !important;
+}
+
+.table-hover tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(56, 161, 105, 0.05) !important;
+}
+
+/* Modern Badges */
+.badge {
+    padding: 5px 12px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.3px;
+}
+
+/* Modern Modal */
+.modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-card {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: scaleIn 0.3s ease;
+}
+
+.modal-header-custom {
+    padding: 24px 28px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+}
+
+.modal-body-custom {
+    padding: 28px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer-custom {
+    padding: 20px 28px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #f9fafb;
+}
+
+/* Stat Cards */
+.stat-card {
+    border-radius: 14px !important;
+    border: none !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    transition: all 0.3s ease !important;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: #38a169; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #2d7a4f; }
+
+/* Sidebar Menu Improvements */
+.dropdown-menu-s .span-title-menu {
+    padding: 10px 16px !important;
+    transition: all 0.2s ease !important;
+}
+
+.dropdown-menu-s .span-title-menu:hover {
+    background: rgba(56, 161, 105, 0.08) !important;
+    padding-left: 20px !important;
+}

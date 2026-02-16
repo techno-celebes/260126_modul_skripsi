@@ -1,73 +1,73 @@
 <template>
     <div class="container-fluid py-4">
         <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 animate-fade-in">
             <div>
-                <h1 class="h3 fw-bold text-dark mb-1">Dashboard</h1>
-                <p class="text-muted mb-0">
-                    Halo, <strong>{{ auth.user.name }}</strong> - Selamat datang di Sistem Akademik
+                <h1 class="h3 fw-bold text-dark mb-1" style="font-size: 1.75rem;">Dashboard</h1>
+                <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                    Halo, <strong style="color: #38a169;">{{ auth.user.name }}</strong> - Selamat datang di Sistem Akademik
                 </p>
             </div>
         </div>
 
         <!-- MAHASISWA DASHBOARD -->
         <div v-if="auth.user.role === 'mahasiswa'">
-            <div class="row g-3 mb-4">
-                <div class="col-md-3">
+            <div class="row g-4 mb-4">
+                <div class="col-md-3 animate-slide-in" style="animation-delay: 0.1s;">
                     <div class="card stat-card">
-                        <div class="card-body">
+                        <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <p class="text-muted mb-1">Aktivitas</p>
-                                    <h3 class="fw-bold mb-0">{{ stats.aktivitas }}</h3>
+                                    <p class="text-muted mb-2" style="font-size: 0.8rem; font-weight: 600;">Aktivitas</p>
+                                    <h3 class="fw-bold mb-0" style="font-size: 1.75rem; color: #1a1a1a;">{{ stats.aktivitas }}</h3>
                                 </div>
-                                <div class="icon-box bg-warning bg-opacity-10">
-                                    <i class="fa fa-calendar fa-2x text-warning"></i>
+                                <div class="icon-box bg-warning bg-opacity-10" style="width: 48px; height: 48px;">
+                                    <i class="fa fa-calendar fa-lg text-warning"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 animate-slide-in" style="animation-delay: 0.2s;">
                     <div class="card stat-card">
-                        <div class="card-body">
+                        <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <p class="text-muted mb-1">Permintaan Akademik</p>
-                                    <h3 class="fw-bold mb-0">{{ stats.permintaan }}</h3>
+                                    <p class="text-muted mb-2" style="font-size: 0.8rem; font-weight: 600;">Permintaan Akademik</p>
+                                    <h3 class="fw-bold mb-0" style="font-size: 1.75rem; color: #1a1a1a;">{{ stats.permintaan }}</h3>
                                 </div>
-                                <div class="icon-box bg-success bg-opacity-10">
-                                    <i class="fa fa-graduation-cap fa-2x text-success"></i>
+                                <div class="icon-box bg-success bg-opacity-10" style="width: 48px; height: 48px;">
+                                    <i class="fa fa-graduation-cap fa-lg text-success"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 animate-slide-in" style="animation-delay: 0.3s;">
                     <div class="card stat-card">
-                        <div class="card-body">
+                        <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <p class="text-muted mb-1">KKN</p>
-                                    <h3 class="fw-bold mb-0">{{ stats.kkn }}</h3>
+                                    <p class="text-muted mb-2" style="font-size: 0.8rem; font-weight: 600;">KKN</p>
+                                    <h3 class="fw-bold mb-0" style="font-size: 1.75rem; color: #1a1a1a;">{{ stats.kkn }}</h3>
                                 </div>
-                                <div class="icon-box bg-info bg-opacity-10">
-                                    <i class="fa fa-users fa-2x text-info"></i>
+                                <div class="icon-box bg-info bg-opacity-10" style="width: 48px; height: 48px;">
+                                    <i class="fa fa-users fa-lg text-info"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 animate-slide-in" style="animation-delay: 0.4s;">
                     <div class="card stat-card">
-                        <div class="card-body">
+                        <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <p class="text-muted mb-1">Status</p>
-                                    <h3 class="fw-bold mb-0 text-success">Aktif</h3>
+                                    <p class="text-muted mb-2" style="font-size: 0.8rem; font-weight: 600;">Status</p>
+                                    <h3 class="fw-bold mb-0 text-success" style="font-size: 1.75rem;">Aktif</h3>
                                 </div>
-                                <div class="icon-box bg-primary bg-opacity-10">
-                                    <i class="fa fa-check-circle fa-2x text-primary"></i>
+                                <div class="icon-box bg-primary bg-opacity-10" style="width: 48px; height: 48px;">
+                                    <i class="fa fa-check-circle fa-lg text-primary"></i>
                                 </div>
                             </div>
                         </div>

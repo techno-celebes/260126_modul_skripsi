@@ -37,17 +37,21 @@
                                 </span>
                             </td>
                             <td>
-                                <button v-if="item.status_proposal === 'Menunggu'" 
-                                    class="btn btn-sm btn-success me-1" 
-                                    @click="showApproveModal(item)">
-                                    <i class="fa fa-check"></i> Setuju
-                                </button>
-                                <button v-if="item.status_proposal === 'Menunggu'" 
-                                    class="btn btn-sm btn-danger" 
-                                    @click="showRejectModal(item)">
-                                    <i class="fa fa-times"></i> Tolak
-                                </button>
-                                <span v-else class="text-muted">-</span>
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <button v-if="item.status_proposal === 'Menunggu'" 
+                                        class="btn btn-sm btn-success" 
+                                        @click="showApproveModal(item)"
+                                        title="Setuju">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button v-if="item.status_proposal === 'Menunggu'" 
+                                        class="btn btn-sm btn-danger" 
+                                        @click="showRejectModal(item)"
+                                        title="Tolak">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <span v-if="item.status_proposal !== 'Menunggu'" class="text-muted">-</span>
+                                </div>
                             </td>
                         </tr>
                         <tr v-if="permintaan.length === 0">
