@@ -21,9 +21,11 @@ class PenilaianController extends Controller
                 return [
                     'id' => 'p_' . $item->id,
                     'type' => 'permintaan',
+                    'permintaan' => $item->permintaan,
                     'mahasiswa' => $item->permintaan->user->name ?? $item->permintaan->nama,
                     'jenis' => $item->permintaan->type,
                     'judul' => $item->judul,
+                    'deskripsi' => $item->deskripsi,
                     'tanggal' => $item->tanggal,
                     'file_path' => $item->file_path,
                     'nilai' => $item->nilai,
@@ -43,9 +45,11 @@ class PenilaianController extends Controller
                 return [
                     'id' => 'a_' . $item->id,
                     'type' => 'aktivitas',
+                    'permintaan' => (object)['user' => $item->aktivitas->user, 'nama' => $item->aktivitas->nama],
                     'mahasiswa' => $item->aktivitas->user->name ?? $item->aktivitas->nama,
                     'jenis' => $item->aktivitas->jenis ?? 'Aktivitas',
                     'judul' => $item->judul,
+                    'deskripsi' => $item->deskripsi,
                     'tanggal' => $item->tanggal ?? $item->created_at,
                     'file_path' => $item->file_path,
                     'nilai' => $item->nilai,
@@ -65,9 +69,11 @@ class PenilaianController extends Controller
                 return [
                     'id' => 'k_' . $item->id,
                     'type' => 'kkn',
+                    'permintaan' => (object)['user' => $item->kkn->user, 'nama' => $item->kkn->nama],
                     'mahasiswa' => $item->kkn->user->name ?? $item->kkn->nama,
                     'jenis' => 'KKN - ' . ucfirst($item->tipe),
                     'judul' => $item->judul,
+                    'deskripsi' => $item->deskripsi,
                     'tanggal' => $item->tanggal ?? $item->created_at,
                     'file_path' => $item->file_path,
                     'nilai' => $item->nilai,
@@ -78,7 +84,31 @@ class PenilaianController extends Controller
                 ];
             });
 
-        $uploads = $uploadsPermintaan->concat($uploadsAktivitas)->concat($uploadsKKN)->sortByDesc('tanggal')->values();
+        // Upload dari Bimbingan
+        $uploadsBimbingan = \App\Models\Bimbingan::with('permintaan.user')
+            ->whereNotNull('file_path')
+            ->latest()
+            ->get()
+            ->map(function($item) {
+                return [
+                    'id' => 'b_' . $item->id,
+                    'type' => 'bimbingan',
+                    'permintaan' => $item->permintaan,
+                    'mahasiswa' => $item->permintaan->user->name ?? $item->permintaan->nama,
+                    'jenis' => 'Bimbingan - ' . $item->permintaan->type,
+                    'judul' => $item->judul,
+                    'deskripsi' => $item->catatan,
+                    'tanggal' => $item->tanggal,
+                    'file_path' => $item->file_path,
+                    'nilai' => null,
+                    'status_validasi' => $item->status_validasi,
+                    'divalidasi_oleh' => $item->divalidasi_oleh,
+                    'catatan_nilai' => $item->catatan_dosen,
+                    'original_id' => $item->id
+                ];
+            });
+
+        $uploads = $uploadsPermintaan->concat($uploadsAktivitas)->concat($uploadsKKN)->concat($uploadsBimbingan)->sortByDesc('tanggal')->values();
 
         return Inertia::render('Admin/Penilaian', [
             'uploads' => $uploads
@@ -88,10 +118,10 @@ class PenilaianController extends Controller
     public function validasi(Request $request, $id)
     {
         $validated = $request->validate([
-            'status' => 'required|in:Divalidasi,Ditolak',
+            'status' => 'required|in:Disetujui,Ditolak',
             'catatan' => 'nullable|string',
             'nilai' => 'nullable|numeric|min:0|max:100',
-            'type' => 'required|in:permintaan,aktivitas,kkn'
+            'type' => 'required|in:permintaan,aktivitas,kkn,bimbingan'
         ]);
 
         if ($validated['type'] === 'permintaan') {
@@ -104,7 +134,7 @@ class PenilaianController extends Controller
                 'deskripsi' => $validated['catatan'] ?? $progress->deskripsi,
                 'nilai' => $validated['nilai'] ?? null,
                 'catatan_nilai' => $validated['catatan'] ?? null,
-                'is_selesai' => $validated['status'] === 'Divalidasi'
+                'is_selesai' => $validated['status'] === 'Disetujui'
             ]);
         } elseif ($validated['type'] === 'aktivitas') {
             $log = \App\Models\AktivitasMahasiswaLog::findOrFail($id);
@@ -115,7 +145,7 @@ class PenilaianController extends Controller
                 'tanggal_validasi' => now(),
                 'nilai' => $validated['nilai'] ?? null,
                 'catatan_nilai' => $validated['catatan'] ?? null,
-                'is_selesai' => $validated['status'] === 'Divalidasi'
+                'is_selesai' => $validated['status'] === 'Disetujui'
             ]);
         } elseif ($validated['type'] === 'kkn') {
             $kknAktivitas = \App\Models\KKNAktivitas::findOrFail($id);
@@ -126,7 +156,16 @@ class PenilaianController extends Controller
                 'tanggal_validasi' => now(),
                 'nilai' => $validated['nilai'] ?? null,
                 'catatan_nilai' => $validated['catatan'] ?? null,
-                'is_selesai' => $validated['status'] === 'Divalidasi'
+                'is_selesai' => $validated['status'] === 'Disetujui'
+            ]);
+        } elseif ($validated['type'] === 'bimbingan') {
+            $bimbingan = \App\Models\Bimbingan::findOrFail($id);
+            
+            $bimbingan->update([
+                'status_validasi' => $validated['status'],
+                'divalidasi_oleh' => auth()->user()->name,
+                'tanggal_validasi' => now(),
+                'catatan_dosen' => $validated['catatan'] ?? null
             ]);
         }
 

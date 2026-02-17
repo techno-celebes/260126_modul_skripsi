@@ -308,7 +308,7 @@ function ucfirst(str) {
 function getStatusClass(status) {
     const map = {
         'Menunggu': 'bg-warning text-dark',
-        'Divalidasi': 'bg-success text-white',
+        'Disetujui': 'bg-success text-white',
         'Ditolak': 'bg-danger text-white'
     }
     return map[status] || 'bg-secondary'
@@ -316,10 +316,8 @@ function getStatusClass(status) {
 
 function getStatusBadgeClass(status) {
     const map = {
-        'Pending': 'bg-warning text-dark',
         'Menunggu': 'bg-warning text-dark',
         'Disetujui': 'bg-success text-white',
-        'Divalidasi': 'bg-success text-white',
         'Ditolak': 'bg-danger text-white',
         'Selesai': 'bg-primary text-white',
         'Proses': 'bg-info text-white'

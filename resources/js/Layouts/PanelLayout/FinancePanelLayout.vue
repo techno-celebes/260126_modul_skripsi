@@ -43,6 +43,13 @@
                             </Link>
                         </div>
 
+                        <!-- Transkrip -->
+                        <div class="dropdown-s">
+                            <Link :href="route('transkrip')" class="dropdown-toggle-s">
+                                <i class="fa fa-file-text"></i> Transkrip Nilai
+                            </Link>
+                        </div>
+
                         <!-- Magang/KKN -->
                         <div class="dropdown-s submenu-magang">
                             <a class="dropdown-toggle-s" @click.stop="toggleDropdown('magang')">
@@ -83,6 +90,20 @@
                         <div class="dropdown-s">
                             <Link :href="route('admin.penilaian')" class="dropdown-toggle-s">
                                 <i class="fa fa-star"></i> Penilaian
+                            </Link>
+                        </div>
+
+                        <!-- Bimbingan -->
+                        <div class="dropdown-s">
+                            <Link :href="route('admin.bimbingan')" class="dropdown-toggle-s">
+                                <i class="fa fa-comments"></i> Bimbingan
+                            </Link>
+                        </div>
+
+                        <!-- Jadwal Ujian -->
+                        <div class="dropdown-s">
+                            <Link :href="route('admin.jadwal-ujian')" class="dropdown-toggle-s">
+                                <i class="fa fa-calendar"></i> Jadwal Ujian
                             </Link>
                         </div>
 

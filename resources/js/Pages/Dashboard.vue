@@ -250,8 +250,8 @@ const props = defineProps({
 function formatDate(date) {
     if (!date) return '-'
     return new Date(date).toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'short',
+        day: '2-digit',
+        month: 'long',
         year: 'numeric'
     })
 }
@@ -260,7 +260,6 @@ function getStatusClass(status) {
     const map = {
         'Menunggu': 'bg-warning text-dark',
         'Disetujui': 'bg-success text-white',
-        'Divalidasi': 'bg-success text-white',
         'Ditolak': 'bg-danger text-white',
         'Selesai': 'bg-primary text-white',
         'Proses': 'bg-info text-white'
@@ -270,10 +269,8 @@ function getStatusClass(status) {
 
 function getActivityStatusClass(status) {
     const map = {
-        'Pending': 'bg-warning text-dark',
         'Menunggu': 'bg-warning text-dark',
         'Disetujui': 'bg-success text-white',
-        'Divalidasi': 'bg-success text-white',
         'Ditolak': 'bg-danger text-white',
         'Selesai': 'bg-primary text-white',
         'Proses': 'bg-info text-white'

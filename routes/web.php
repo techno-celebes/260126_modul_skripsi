@@ -73,6 +73,7 @@ Route::get('/aktivitas/{id}', [AktivitasController::class, 'show'])->middleware(
 Route::post('/aktivitas/{id}/log', [AktivitasController::class, 'storeLog'])->middleware(['auth', 'verified'])->name('aktivitas.log.store');
 
 Route::get('/nilai', [\App\Http\Controllers\NilaiController::class, 'index'])->middleware(['auth', 'verified'])->name('nilai');
+Route::get('/transkrip', [\App\Http\Controllers\TranskripController::class, 'index'])->middleware(['auth', 'verified'])->name('transkrip');
 
 Route::get('/compre',[ CompreController::class,"index"])->middleware(['auth', 'verified'])->name('compre');
 
@@ -87,6 +88,8 @@ Route::get('/tugasakhir', [TugasAkhirController::class, 'index'])->middleware(['
 Route::post('/tugasakhir', [TugasAkhirController::class, 'store'])->middleware(['auth', 'verified'])->name('tugasakhir.store');
 Route::get('/tugasakhir/{id}', [TugasAkhirController::class, 'show'])->middleware(['auth', 'verified'])->name('tugasakhir.show');
 Route::post('/tugasakhir/{id}/progress', [TugasAkhirController::class, 'storeProgress'])->middleware(['auth', 'verified'])->name('tugasakhir.progress.store');
+Route::post('/tugasakhir/{id}/bimbingan', [TugasAkhirController::class, 'storeBimbingan'])->middleware(['auth', 'verified'])->name('tugasakhir.bimbingan.store');
+Route::post('/tugasakhir/{id}/dosen', [TugasAkhirController::class, 'updateDosenPembimbing'])->middleware(['auth', 'verified'])->name('tugasakhir.dosen.update');
 
 // Admin Routes
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
@@ -97,7 +100,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('/validasi/{id}/reject', [\App\Http\Controllers\Admin\ValidasiController::class, 'reject'])->name('validasi.reject');
     Route::get('/penilaian', [\App\Http\Controllers\Admin\PenilaianController::class, 'index'])->name('penilaian');
     Route::post('/penilaian/{id}/validasi', [\App\Http\Controllers\Admin\PenilaianController::class, 'validasi'])->name('penilaian.validasi');
+    Route::get('/bimbingan', [\App\Http\Controllers\Admin\BimbinganController::class, 'index'])->name('bimbingan');
+    Route::post('/bimbingan/{id}/validasi', [\App\Http\Controllers\Admin\BimbinganController::class, 'validasi'])->name('bimbingan.validasi');
     Route::get('/laporan', [\App\Http\Controllers\Admin\LaporanController::class, 'index'])->name('laporan');
+    Route::get('/jadwal-ujian', [\App\Http\Controllers\Admin\JadwalUjianController::class, 'index'])->name('jadwal-ujian');
+    Route::post('/jadwal-ujian', [\App\Http\Controllers\Admin\JadwalUjianController::class, 'store'])->name('jadwal-ujian.store');
+    Route::put('/jadwal-ujian/{id}', [\App\Http\Controllers\Admin\JadwalUjianController::class, 'update'])->name('jadwal-ujian.update');
+    Route::delete('/jadwal-ujian/{id}', [\App\Http\Controllers\Admin\JadwalUjianController::class, 'destroy'])->name('jadwal-ujian.destroy');
 });
 
 

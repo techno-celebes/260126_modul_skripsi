@@ -18,6 +18,8 @@ class PermintaanAkademik extends Model
         'judul',
         'dosen_pembimbing',
         'dosen_pembimbing_id',
+        'dosen_pembimbing_2',
+        'dosen_pembimbing_2_id',
         'tanggal_pengajuan',
         'tanggal_persetujuan',
         'status',
@@ -41,5 +43,15 @@ class PermintaanAkademik extends Model
     public function progress()
     {
         return $this->hasMany(PermintaanAkademikProgress::class);
+    }
+
+    public function bimbingan()
+    {
+        return $this->hasMany(Bimbingan::class);
+    }
+
+    public function jadwalUjian()
+    {
+        return $this->hasMany(JadwalUjian::class);
     }
 }

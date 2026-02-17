@@ -28,7 +28,7 @@
                             @click="activeTab='log'">
                             <i class="fa fa-list me-2"></i>Log Aktivitas
                         </button>
-                        <button class="btn w-100 tab-button"
+                        <button v-if="aktivitas?.status === 'Disetujui'" class="btn w-100 tab-button"
                             :class="activeTab === 'nilai' ? 'btn-success' : 'btn-light'"
                             @click="activeTab='nilai'">
                             <i class="fa fa-star me-2"></i>Penilaian
@@ -84,25 +84,33 @@
                             <h5 class="fw-bold mb-3">Log Aktivitas</h5>
                             <p class="text-muted mb-4">Log otomatis dari KKN, Magang, dan Permintaan Akademik</p>
 
-                            <!-- Timeline Log -->
-                            <div class="timeline">
-                                <div v-for="(log, index) in logs" :key="log.id" class="timeline-item">
-                                    <div class="timeline-marker">
-                                        <i class="fa fa-circle text-primary"></i>
+                            <!-- Timeline dengan bulat + garis -->
+                            <div class="timeline-container">
+                                <div v-for="(log, index) in logs" :key="log.id" class="timeline-item-wrapper">
+                                    <div class="timeline-dot" :class="log.status_validasi === 'Disetujui' ? 'completed' : (log.status_validasi === 'Ditolak' ? 'rejected' : 'pending')">
+                                        <i class="fa" :class="log.status_validasi === 'Disetujui' ? 'fa-check' : (log.status_validasi === 'Ditolak' ? 'fa-times' : 'fa-circle')"></i>
                                     </div>
-                                    <div class="timeline-content">
-                                        <h6 class="mb-1 fw-bold">{{ log.judul }}</h6>
-                                        <p v-if="log.deskripsi" class="text-muted small mb-1">{{ log.deskripsi }}</p>
-                                        <p class="text-muted small mb-1">
+                                    <div v-if="index < logs.length - 1" class="timeline-line"></div>
+                                    <div class="timeline-content-box">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <h6 class="mb-1 fw-bold">{{ log.judul }}</h6>
+                                                <p v-if="log.deskripsi" class="text-muted small mb-1">{{ log.deskripsi }}</p>
+                                            </div>
+                                            <span class="badge" :class="log.status_validasi === 'Disetujui' ? 'bg-success' : (log.status_validasi === 'Ditolak' ? 'bg-danger' : 'bg-warning text-dark')">
+                                                {{ log.status_validasi || 'Menunggu' }}
+                                            </span>
+                                        </div>
+                                        <div class="text-muted small mb-2">
                                             <i class="fa fa-calendar me-1"></i>{{ formatDate(log.created_at) }}
-                                        </p>
+                                        </div>
                                         <div class="d-flex gap-2 align-items-center">
                                             <a v-if="log.file_path" :href="`/storage/${log.file_path}`" target="_blank" class="btn btn-sm btn-info">
                                                 <i class="fa fa-download"></i> Lihat File
                                             </a>
                                             <span v-if="log.nilai" class="badge bg-primary">Nilai: {{ log.nilai }}</span>
-                                            <span v-if="log.status_validasi" class="badge" :class="log.status_validasi === 'Divalidasi' ? 'bg-success' : 'bg-danger'">
-                                                {{ log.status_validasi }}
+                                            <span v-if="log.divalidasi_oleh" class="badge bg-info">
+                                                <i class="fa fa-user me-1"></i>{{ log.divalidasi_oleh }}
                                             </span>
                                         </div>
                                     </div>
@@ -115,7 +123,7 @@
                         </div>
     
                         <!-- NILAI -->
-                        <div v-if="activeTab==='nilai'">
+                        <div v-if="activeTab==='nilai' && aktivitas?.status === 'Disetujui'">
                             <h5 class="fw-bold mb-3">Penilaian Aktivitas</h5>
                             
                             <div class="table-responsive">
@@ -229,13 +237,19 @@
 
     function formatDate(date) {
         if (!date) return '-'
-        return new Date(date).toLocaleString('id-ID')
+        return new Date(date).toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })
     }
 
     function getStatusClass(status) {
         const map = {
             'Menunggu': 'bg-warning text-dark',
-            'Divalidasi': 'bg-success text-white',
+            'Disetujui': 'bg-success text-white',
             'Ditolak': 'bg-danger text-white'
         }
         return map[status] || 'bg-secondary'
@@ -243,10 +257,8 @@
 
     function getStatusBadgeClass(status) {
         const map = {
-            'Pending': 'bg-warning text-dark',
             'Menunggu': 'bg-warning text-dark',
             'Disetujui': 'bg-success text-white',
-            'Divalidasi': 'bg-success text-white',
             'Ditolak': 'bg-danger text-white',
             'Selesai': 'bg-primary text-white',
             'Proses': 'bg-info text-white'
@@ -274,37 +286,71 @@
         padding: 14px 12px;
     }
 
-    .timeline {
+    /* Timeline Style - Simple */
+    .timeline-container {
         position: relative;
         padding-left: 30px;
     }
 
-    .timeline-item {
+    .timeline-item-wrapper {
         position: relative;
-        padding-bottom: 25px;
+        margin-bottom: 25px;
     }
 
-    .timeline-item:not(:last-child)::before {
-        content: '';
+    .timeline-dot {
+        position: absolute;
+        left: -27px;
+        top: 0;
+        font-size: 14px;
+        z-index: 2;
+    }
+
+    .timeline-dot.completed i {
+        color: #28a745;
+    }
+
+    .timeline-dot.pending i {
+        color: #ffc107;
+    }
+
+    .timeline-dot.rejected i {
+        color: #dc3545;
+    }
+
+    .timeline-line {
         position: absolute;
         left: -21px;
         top: 20px;
         width: 2px;
         height: calc(100% - 10px);
         background: #e5e7eb;
+        z-index: 1;
     }
 
-    .timeline-marker {
-        position: absolute;
-        left: -27px;
-        top: 0;
-        font-size: 14px;
-    }
-
-    .timeline-content {
+    .timeline-content-box {
         background: #f8f9fa;
-        padding: 12px 15px;
-        border-radius: 8px;
-        border-left: 3px solid #0d6efd;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border-left: 4px solid #0d6efd;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
     }
-    </style>
+
+    .timeline-content-box:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateX(5px);
+    }
+    .timeline-content-box {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border-left: 4px solid #0d6efd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.timeline-content-box:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateX(5px);
+}
+</style>

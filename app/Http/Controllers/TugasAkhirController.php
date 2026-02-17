@@ -62,7 +62,7 @@ class TugasAkhirController extends Controller
             'nim' => $validated['nim'],
             'jenis' => $validated['type'],
             'keterangan' => 'Mengajukan ' . $validated['type'] . ': ' . $validated['judul'],
-            'status' => 'Pending'
+            'status' => 'Menunggu'
         ]);
 
         return redirect()->route('tugasakhir.index');
@@ -72,12 +72,14 @@ class TugasAkhirController extends Controller
     {
         $permintaan = PermintaanAkademik::where('id', $id)
             ->where('user_id', auth()->id())
-            ->with('progress')
+            ->with(['progress', 'bimbingan', 'jadwalUjian'])
             ->firstOrFail();
             
         return Inertia::render('dta', [
             'permintaan' => $permintaan,
-            'progress' => $permintaan->progress
+            'progress' => $permintaan->progress,
+            'bimbingan' => $permintaan->bimbingan,
+            'jadwalUjian' => $permintaan->jadwalUjian
         ]);
     }
 
@@ -118,6 +120,56 @@ class TugasAkhirController extends Controller
                 ->first()->id ?? 0,
             'judul' => $validated['judul'] . ' - ' . $permintaan->type
         ]);
+
+        return back();
+    }
+
+    public function storeBimbingan(Request $request, $id)
+    {
+        $permintaan = PermintaanAkademik::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        // Cek apakah proposal sudah disetujui
+        if ($permintaan->status_proposal !== 'Disetujui') {
+            return back()->withErrors(['error' => 'Proposal harus disetujui terlebih dahulu sebelum melakukan bimbingan']);
+        }
+
+        $validated = $request->validate([
+            'judul' => 'required|string',
+            'catatan' => 'nullable|string',
+            'file' => 'nullable|file|max:10240'
+        ]);
+
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('bimbingan', 'public');
+        }
+
+        \App\Models\Bimbingan::create([
+            'permintaan_akademik_id' => $permintaan->id,
+            'judul' => $validated['judul'],
+            'catatan' => $validated['catatan'] ?? null,
+            'tanggal' => now(),
+            'file_path' => $filePath,
+            'status_validasi' => 'Menunggu'
+        ]);
+
+        return back();
+    }
+
+    public function updateDosenPembimbing(Request $request, $id)
+    {
+        $permintaan = PermintaanAkademik::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $validated = $request->validate([
+            'dosen_pembimbing' => 'nullable|string',
+            'dosen_pembimbing_2' => 'nullable|string'
+        ]);
+
+        $permintaan->update($validated);
 
         return back();
     }

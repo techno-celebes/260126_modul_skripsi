@@ -108,8 +108,8 @@ const totalMenunggu = computed(() => {
 function formatDate(date) {
     if (!date) return '-'
     return new Date(date).toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'short',
+        day: '2-digit',
+        month: 'long',
         year: 'numeric'
     })
 }
@@ -117,10 +117,8 @@ function formatDate(date) {
 function getStatusClass(status) {
     const map = {
         'Menunggu': 'bg-warning text-dark',
-        'Divalidasi': 'bg-success text-white',
-        'Ditolak': 'bg-danger text-white',
-        'Selesai': 'bg-primary text-white',
-        'Proses': 'bg-info text-white'
+        'Disetujui': 'bg-success text-white',
+        'Ditolak': 'bg-danger text-white'
     }
     return map[status] || 'bg-secondary text-white'
 }

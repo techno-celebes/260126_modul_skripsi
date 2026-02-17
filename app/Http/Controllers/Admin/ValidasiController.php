@@ -63,8 +63,8 @@ class ValidasiController extends Controller
         PermintaanAkademikProgress::create([
             'permintaan_akademik_id' => $permintaan->id,
             'jenis_progress' => 'progress',
-            'judul' => 'Ditolak oleh Admin',
-            'deskripsi' => 'Alasan: ' . $validated['alasan'],
+            'judul' => 'Proposal Ditolak',
+            'deskripsi' => 'Permintaan ditolak oleh ' . auth()->user()->name . '. Alasan: ' . $validated['alasan'],
             'tanggal' => now(),
             'divalidasi_oleh' => auth()->user()->name,
             'tanggal_validasi' => now(),

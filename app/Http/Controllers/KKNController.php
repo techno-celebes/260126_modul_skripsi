@@ -34,7 +34,7 @@ class KKNController extends Controller
             'alamat' => $validated['alamat'],
             'penanggung_jawab' => $validated['penanggung_jawab'],
             'durasi' => $validated['durasi'],
-            'status' => 'Pending'
+            'status' => 'Menunggu'
         ]);
 
         // Auto sync ke aktivitas mahasiswa
@@ -44,7 +44,7 @@ class KKNController extends Controller
             'nim' => $validated['nim'],
             'jenis' => 'KKN',
             'keterangan' => 'KKN di ' . $validated['alamat'] . ' selama ' . $validated['durasi'],
-            'status' => 'Pending'
+            'status' => 'Menunggu'
         ]);
 
         return redirect()->route('kkn');

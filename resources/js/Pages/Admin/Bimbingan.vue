@@ -2,8 +2,8 @@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 fw-bold text-dark mb-1">Penilaian Upload</h1>
-            <p class="text-muted mb-0">Validasi dan beri nilai berkas yang diupload mahasiswa</p>
+            <h1 class="h3 fw-bold text-dark mb-1">Validasi Bimbingan</h1>
+            <p class="text-muted mb-0">Validasi dan beri catatan untuk bimbingan mahasiswa</p>
         </div>
     </div>
 
@@ -15,31 +15,28 @@
                         <tr>
                             <th>No</th>
                             <th>Mahasiswa</th>
-                            <th>Jenis</th>
-                            <th>Judul Upload</th>
+                            <th>Judul Proposal</th>
+                            <th>Judul Bimbingan</th>
+                            <th>Catatan Mahasiswa</th>
                             <th>Tanggal</th>
-                            <th>Berkas</th>
-                            <th>Nilai</th>
+                            <th>File</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in uploads" :key="item.id">
+                        <tr v-for="(item, index) in bimbingan" :key="item.id">
                             <td>{{ index + 1 }}</td>
                             <td>{{ item.permintaan?.user?.name || item.permintaan?.nama }}</td>
-                            <td>{{ item.permintaan?.type }}</td>
+                            <td>{{ item.permintaan?.judul }}</td>
                             <td>{{ item.judul }}</td>
+                            <td>{{ item.catatan || '-' }}</td>
                             <td>{{ formatDate(item.tanggal) }}</td>
                             <td>
                                 <a v-if="item.file_path" :href="`/storage/${item.file_path}`" target="_blank" class="btn btn-sm btn-info" title="Lihat File">
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 <span v-else>-</span>
-                            </td>
-                            <td>
-                                <span v-if="item.nilai" class="badge bg-primary">{{ item.nilai }}</span>
-                                <span v-else class="text-muted">-</span>
                             </td>
                             <td>
                                 <span class="badge" :class="getStatusClass(item.status_validasi)">
@@ -51,7 +48,7 @@
                                     <button v-if="!item.status_validasi || item.status_validasi === 'Menunggu'" 
                                         class="btn btn-sm btn-success" 
                                         @click="showValidasiModal(item, 'Disetujui')"
-                                        title="Beri Nilai">
+                                        title="Setujui">
                                         <i class="fa fa-check"></i>
                                     </button>
                                     <button v-if="!item.status_validasi || item.status_validasi === 'Menunggu'" 
@@ -63,15 +60,15 @@
                                     <button v-if="item.status_validasi === 'Disetujui'" 
                                         class="btn btn-sm btn-warning" 
                                         @click="showValidasiModal(item, 'Disetujui')"
-                                        title="Edit Nilai">
+                                        title="Edit Catatan">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                 </div>
                                 <span v-if="item.divalidasi_oleh" class="text-muted small d-block mt-1">{{ item.divalidasi_oleh }}</span>
                             </td>
                         </tr>
-                        <tr v-if="uploads.length === 0">
-                            <td colspan="9" class="text-center text-muted">Belum ada upload</td>
+                        <tr v-if="bimbingan.length === 0">
+                            <td colspan="9" class="text-center text-muted">Belum ada bimbingan</td>
                         </tr>
                     </tbody>
                 </table>
@@ -83,30 +80,24 @@
     <div v-if="modalValidasi" class="modal-backdrop-custom">
         <div class="modal-card">
             <div class="modal-header-custom" :class="statusValidasi === 'Disetujui' ? 'bg-success' : 'bg-danger'">
-                <h5 class="fw-bold mb-0 text-white">{{ statusValidasi === 'Disetujui' ? 'Validasi & Beri Nilai' : 'Tolak' }} Upload</h5>
+                <h5 class="fw-bold mb-0 text-white">{{ statusValidasi === 'Disetujui' ? 'Setujui' : 'Tolak' }} Bimbingan</h5>
                 <button class="btn-close btn-close-white" @click="closeModal"></button>
             </div>
             <div class="modal-body-custom">
                 <p class="mb-2"><strong>Mahasiswa:</strong> {{ selectedItem?.permintaan?.user?.name || selectedItem?.permintaan?.nama }}</p>
-                <p class="mb-2"><strong>Judul:</strong> {{ selectedItem?.judul }}</p>
-                <p class="mb-3"><strong>Deskripsi:</strong> {{ selectedItem?.deskripsi || '-' }}</p>
+                <p class="mb-2"><strong>Judul Bimbingan:</strong> {{ selectedItem?.judul }}</p>
+                <p class="mb-3"><strong>Catatan Mahasiswa:</strong> {{ selectedItem?.catatan || '-' }}</p>
                 
                 <div v-if="statusValidasi === 'Disetujui'" class="mb-3">
-                    <label class="fw-bold">Nilai (0-100) <span class="text-danger">*</span></label>
-                    <input 
-                        type="number" 
-                        class="form-control" 
-                        v-model="nilai" 
-                        min="0" 
-                        max="100" 
-                        step="0.01"
-                        placeholder="Masukkan nilai"
-                    />
+                    <label class="fw-bold">Nilai (0-100)</label>
+                    <input type="number" class="form-control" v-model="nilai" min="0" max="100" step="0.01" placeholder="Opsional">
+                    <small class="text-muted">Kosongkan jika tidak ingin memberi nilai</small>
                 </div>
                 
                 <div class="mb-3">
-                    <label class="fw-bold">Catatan</label>
-                    <textarea class="form-control" rows="3" v-model="catatan" placeholder="Tambahkan catatan (opsional)"></textarea>
+                    <label class="fw-bold">Catatan Dosen <span class="text-danger">*</span></label>
+                    <textarea class="form-control" rows="4" v-model="catatanDosen" 
+                        :placeholder="statusValidasi === 'Disetujui' ? 'Berikan arahan/saran untuk mahasiswa...' : 'Alasan penolakan...'"></textarea>
                 </div>
             </div>
             <div class="modal-footer-custom">
@@ -114,9 +105,9 @@
                 <button 
                     class="btn" 
                     :class="statusValidasi === 'Disetujui' ? 'btn-success' : 'btn-danger'" 
-                    :disabled="statusValidasi === 'Disetujui' && !nilai"
+                    :disabled="!catatanDosen"
                     @click="submitValidasi">
-                    {{ statusValidasi === 'Disetujui' ? 'Simpan Nilai' : 'Tolak Upload' }}
+                    {{ statusValidasi === 'Disetujui' ? 'Setujui Bimbingan' : 'Tolak Bimbingan' }}
                 </button>
             </div>
         </div>
@@ -132,13 +123,13 @@ import PanelLayout from '@/Layouts/PanelLayout/FinancePanelLayout.vue'
 defineOptions({ layout: PanelLayout })
 
 defineProps({
-    uploads: Array
+    bimbingan: Array
 })
 
 const modalValidasi = ref(false)
 const selectedItem = ref(null)
 const statusValidasi = ref('')
-const catatan = ref('')
+const catatanDosen = ref('')
 const nilai = ref(null)
 
 function formatDate(date) {
@@ -154,9 +145,7 @@ function getStatusClass(status) {
     const map = {
         'Menunggu': 'bg-warning text-dark',
         'Disetujui': 'bg-success text-white',
-        'Ditolak': 'bg-danger text-white',
-        'Selesai': 'bg-primary text-white',
-        'Proses': 'bg-info text-white'
+        'Ditolak': 'bg-danger text-white'
     }
     return map[status] || 'bg-secondary text-white'
 }
@@ -164,7 +153,7 @@ function getStatusClass(status) {
 function showValidasiModal(item, status) {
     selectedItem.value = item
     statusValidasi.value = status
-    catatan.value = item.catatan_nilai || ''
+    catatanDosen.value = item.catatan_dosen || ''
     nilai.value = item.nilai || null
     modalValidasi.value = true
 }
@@ -172,81 +161,60 @@ function showValidasiModal(item, status) {
 function closeModal() {
     modalValidasi.value = false
     selectedItem.value = null
-    catatan.value = ''
+    catatanDosen.value = ''
     nilai.value = null
 }
 
 function submitValidasi() {
-    router.post(`/admin/penilaian/${selectedItem.value.original_id}/validasi`, {
+    router.post(`/admin/bimbingan/${selectedItem.value.id}/validasi`, {
         status: statusValidasi.value,
-        catatan: catatan.value,
-        nilai: nilai.value,
-        type: selectedItem.value.type
+        catatan_dosen: catatanDosen.value,
+        nilai: nilai.value
     }, {
-        onSuccess: () => {
-            closeModal()
-        }
+        onSuccess: () => closeModal()
     })
 }
 </script>
 
 <style scoped>
-.card {
-    border-radius: 12px;
-}
-
-.table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    text-align: center;
-    vertical-align: middle;
-    padding: 16px 12px;
-}
-
-.table td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 14px 12px;
-}
-
 .modal-backdrop-custom {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 9999;
 }
 
 .modal-card {
-    width: 600px;
-    max-height: 90vh;
     background: white;
     border-radius: 12px;
-    display: flex;
-    flex-direction: column;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header-custom {
-    padding: 16px 20px;
+    padding: 1.5rem;
+    border-radius: 12px 12px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 12px 12px 0 0;
 }
 
 .modal-body-custom {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
+    padding: 1.5rem;
 }
 
 .modal-footer-custom {
-    padding: 16px 20px;
-    border-top: 1px solid #e5e7eb;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #dee2e6;
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 0.5rem;
 }
 </style>

@@ -86,7 +86,7 @@ class AktivitasController extends Controller
             'nim' => $validated['nim'],
             'jenis' => $validated['jenis'],
             'keterangan' => $validated['keterangan'],
-            'status' => 'Pending'
+            'status' => 'Menunggu'
         ]);
 
         AktivitasMahasiswaLog::create([
