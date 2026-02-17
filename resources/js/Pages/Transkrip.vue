@@ -15,12 +15,24 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-2"><strong>Nama:</strong> {{ user?.name }}</p>
-                    <p class="mb-2"><strong>NIM:</strong> {{ user?.nim }}</p>
+                    <div class="mb-2" style="display: flex;">
+                        <strong style="width: 130px;">Nama:</strong>
+                        <span style="flex: 1;">{{ user?.name }}</span>
+                    </div>
+                    <div class="mb-2" style="display: flex;">
+                        <strong style="width: 130px;">NIM:</strong>
+                        <span style="flex: 1;">{{ user?.nim }}</span>
+                    </div>
                 </div>
                 <div class="col-md-6">
-                    <p class="mb-2"><strong>Program Studi:</strong> {{ user?.prodi || '-' }}</p>
-                    <p class="mb-2"><strong>Angkatan:</strong> {{ user?.angkatan || '-' }}</p>
+                    <div class="mb-2" style="display: flex;">
+                        <strong style="width: 130px;">Program Studi:</strong>
+                        <span style="flex: 1;">{{ user?.prodi || '-' }}</span>
+                    </div>
+                    <div class="mb-2" style="display: flex;">
+                        <strong style="width: 130px;">Angkatan:</strong>
+                        <span style="flex: 1;">{{ user?.angkatan || '-' }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -223,8 +235,57 @@ function printTranskrip() {
 }
 
 @media print {
-    .btn, .text-muted {
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+    
+    .btn {
         display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        page-break-inside: avoid;
+    }
+    
+    .table-responsive {
+        overflow: visible !important;
+    }
+    
+    .table {
+        width: 100% !important;
+        font-size: 10px !important;
+        table-layout: auto !important;
+    }
+    
+    .table th, .table td {
+        padding: 6px 3px !important;
+        white-space: nowrap !important;
+        font-size: 10px !important;
+    }
+    
+    .table th {
+        background-color: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-weight: bold !important;
+    }
+    
+    .badge {
+        border: 1px solid #000 !important;
+        padding: 1px 4px !important;
+        font-size: 9px !important;
+        white-space: nowrap !important;
+    }
+    
+    .row.g-3 {
+        display: none !important;
+    }
+    
+    h1, h5 {
+        font-size: 14px !important;
     }
 }
 </style>
